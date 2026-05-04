@@ -199,13 +199,24 @@ body{
 </head>
 <body>
 
-<!-- 名前入力スタート画面 -->
-<div class="name-screen" id="nameScreen">
-  <div class="name-logo">🫵 ゆびっこ 🫵</div>
-  <img class="name-chara" src="assets/body-normal.png" alt="ゆびっこ">
+<!-- タイトル選択画面（続きor新規） -->
+<div class="name-screen" id="selectScreen">
+  <div class="name-logo">🫵 ゆびっこ育成ゲーム 🫵</div>
+  <div style="font-size:72px;animation:idle-bounce 2s ease-in-out infinite;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.5));">🫵</div>
+  <div class="name-msg" id="selectMsg">どうする？</div>
+  <div style="display:flex;flex-direction:column;gap:10px;width:min(240px,75vw);">
+    <button class="name-start-btn" id="continueBtn" onclick="continueGame()" style="background:linear-gradient(145deg,#60a0e0,#4080c0);box-shadow:0 4px 0 #204080,0 6px 20px rgba(60,100,220,0.4);">続きを育てる 🫵</button>
+    <button class="name-start-btn" onclick="showNameScreen()" style="font-size:11px;">あたらしく飼う ✨</button>
+  </div>
+</div>
+
+<!-- 名前入力画面 -->
+<div class="name-screen" id="nameScreen" style="display:none;">
+  <div class="name-logo">🫵 ゆびっこ育成ゲーム 🫵</div>
+  <div style="font-size:72px;animation:idle-bounce 2s ease-in-out infinite;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.5));">🫵</div>
   <div class="name-msg">あたらしいゆびっこが<br>やってきた！<br>なまえをつけてあげよう</div>
   <input class="name-input" id="nameInput" type="text" maxlength="8" placeholder="なまえ（8文字まで）" oninput="onNameInput()">
-  <button class="name-start-btn" id="nameStartBtn" onclick="startGame()" disabled>飼育スタート！</button>
+  <button class="name-start-btn" id="nameStartBtn" onclick="startGame()" disabled>飼育スタート！ 🎉</button>
 </div>
 
 <div class="game-title" id="gameTitle">🫵 ゆびっこ 🫵</div>
@@ -451,6 +462,7 @@ function spawnPoop() {
   renderPoops();
   setMsg('💩 したよ！片付けてくれ！');
   showBubble('うっ…💩しちゃった');
+  playSE('poop');
   spawnFx(['💩','💨']);
 }
 
@@ -497,13 +509,28 @@ const HAIR = [
 // 他の禿げはhair1〜4.pngを使う（既存の禿げPNG）
 
 function getBodyFile(bodyType, hairStage) {
-  const isBald = hairStage >= 4; // つるつるのみ禿げPNG切り替え
-  if (bodyType === 'macho' && isBald) return 'assets/body-macho-bald.png';
-  if (bodyType === 'macho')  return 'assets/body-macho.png';
-  if (bodyType === 'fat')    return 'assets/body-fat.png';
-  if (bodyType === 'thin')   return 'assets/body-thin.png';
-  if (bodyType === 'sick')   return 'assets/body-sick.png';
-  // normal: 禿げ段階によってhair0〜4を使う
+  // つるつる（hair4）専用PNG
+  if (hairStage >= 4) {
+    if (bodyType === 'macho') return 'assets/body-macho-bald.png';
+    if (bodyType === 'fat')   return 'assets/body-fat-bald.png';
+    if (bodyType === 'sick')  return 'assets/body-sick-bald.png';
+    if (bodyType === 'thin')  return 'assets/hair4.png'; // ガリ×つるつる→hair4で代用
+    return 'assets/hair4.png'; // normal×つるつる
+  }
+  // ほぼ禿げ（hair3）専用PNG
+  if (hairStage === 3) {
+    if (bodyType === 'macho') return 'assets/body-macho-hair3.png';
+    if (bodyType === 'fat')   return 'assets/body-fat-hair3.png';
+    if (bodyType === 'thin')  return 'assets/body-thin-hair3.png';
+    if (bodyType === 'sick')  return 'assets/body-sick-hair3.png';
+    return 'assets/hair3.png'; // normal×ほぼ禿げ
+  }
+  // hair0〜2はbodyTypeのPNGをベースに（髪の変化はhairPNGで対応）
+  if (bodyType === 'macho') return 'assets/body-macho.png';
+  if (bodyType === 'fat')   return 'assets/body-fat.png';
+  if (bodyType === 'thin')  return 'assets/body-thin.png';
+  if (bodyType === 'sick')  return 'assets/body-sick.png';
+  // normal: 禿げ段階のhairPNGを使う
   const hairFiles = ['assets/hair0.png','assets/hair1.png','assets/hair2.png','assets/hair3.png','assets/hair4.png'];
   return hairFiles[hairStage];
 }
@@ -596,6 +623,7 @@ function checkMidnightEvolution() {
   state.bodyType = newType;
 
   if (newType !== prevType) {
+    playSE('levelup');
     // 進化演出
     const evo = {
       macho:  { msg:'💪 マッチョに進化した！！', fx:['💪','⭐','🔥'], bubble:'筋肉がっ…！' },
@@ -815,6 +843,8 @@ function gameover() {
   state.alive = false;
   setAnim('s-dead');
   setMsg('ゆびっこは逝ってしまった…');
+  stopBGM();
+  playSE('gameover');
   const hairMsg = state.hairStage >= 4 ? 'つるつるのまま' : '';
   const fatMsg  = state.bodyStage >= 3 ? 'デブのまま' : state.bodyStage === 0 ? 'ガリガリのまま' : '';
   document.getElementById('ovSub').textContent = [hairMsg,fatMsg].filter(Boolean).join('・')+'逝った';
@@ -835,11 +865,14 @@ function restart() {
   localStorage.removeItem(SAVE_KEY);
   clearPendingPoops();
   // 名前入力画面を再表示
-  const ns = document.getElementById('nameScreen');
-  ns.style.display = 'flex'; ns.classList.remove('hide');
   document.getElementById('nameInput').value = '';
   document.getElementById('nameStartBtn').disabled = true;
   document.getElementById('gameTitle').textContent = '🫵 ゆびっこ 🫵';
+  document.getElementById('selectScreen').style.cssText = 'display:flex;';
+  document.getElementById('selectScreen').classList.remove('hide');
+  document.getElementById('selectMsg').textContent = 'どうする？';
+  document.getElementById('continueBtn').textContent = 'あたらしく飼う ✨';
+  document.getElementById('nameScreen').style.display = 'none';
   updateUI();
 }
 
@@ -850,7 +883,11 @@ const mgOverlay = document.getElementById('mgOverlay');
 const mgBox     = document.getElementById('mgBox');
 
 function openMg(html) { mgBox.innerHTML = html; mgOverlay.classList.add('show'); }
-function closeMg()    { mgOverlay.classList.remove('show'); mgBox.innerHTML = ''; }
+function closeMg() {
+  mgOverlay.classList.remove('show');
+  mgBox.innerHTML = '';
+  playBGM('main');
+}
 
 function mgReward() {
   state.satisfy = state.satisfy + 10;
@@ -866,6 +903,7 @@ function mgReward() {
 function openMgSelect() {
   if (!state.alive) return;
   if (state.sleeping) { showBubble('Zz…起こして！'); return; }
+  playBGM('minigame');
   openMg(`
     <div class="mg-title">🏃 うんどう</div>
     <div class="mg-sub">どっちにする？</div>
@@ -1096,8 +1134,69 @@ function endBreath(quit) {
 }
 
 // ===================================================
-// 名前入力スタート画面
 // ===================================================
+// 音楽・SE システム
+// ===================================================
+const AUDIO = {
+  title:    new Audio('assets/bgm-title.mp3'),
+  main:     new Audio('assets/bgm-main.mp3'),
+  minigame: new Audio('assets/bgm-minigame.mp3'),
+  levelup:  new Audio('assets/se-levelup.mp3'),
+  gameover: new Audio('assets/se-gameover.mp3'),
+  poop:     new Audio('assets/se-poop.mp3'),
+};
+AUDIO.title.loop = true; AUDIO.main.loop = true; AUDIO.minigame.loop = true;
+AUDIO.title.volume = 0.6; AUDIO.main.volume = 0.5; AUDIO.minigame.volume = 0.5;
+AUDIO.levelup.volume = 0.8; AUDIO.gameover.volume = 0.7; AUDIO.poop.volume = 0.9;
+
+let currentBGM = null;
+
+function playBGM(name) {
+  if (currentBGM === name) return;
+  ['title','main','minigame'].forEach(k => { AUDIO[k].pause(); AUDIO[k].currentTime = 0; });
+  currentBGM = name;
+  if (name && AUDIO[name]) AUDIO[name].play().catch(()=>{});
+}
+function stopBGM() {
+  ['title','main','minigame'].forEach(k => { AUDIO[k].pause(); AUDIO[k].currentTime = 0; });
+  currentBGM = null;
+}
+function playSE(name) {
+  if (!AUDIO[name]) return;
+  AUDIO[name].currentTime = 0;
+  AUDIO[name].play().catch(()=>{});
+}
+
+// ===================================================
+// タイトル・名前入力画面
+// ===================================================
+function showSelectScreen() {
+  document.getElementById('selectScreen').style.display = 'flex';
+  document.getElementById('nameScreen').style.display = 'none';
+}
+
+function showNameScreen() {
+  document.getElementById('selectScreen').classList.add('hide');
+  setTimeout(() => {
+    document.getElementById('selectScreen').style.display = 'none';
+    const ns = document.getElementById('nameScreen');
+    ns.style.display = 'flex';
+    ns.classList.remove('hide');
+  }, 400);
+}
+
+function continueGame() {
+  document.getElementById('selectScreen').classList.add('hide');
+  setTimeout(() => {
+    document.getElementById('selectScreen').style.display = 'none';
+    const name = state.petName || 'ゆびっこ';
+    document.getElementById('gameTitle').textContent = `🫵 ${name} 🫵`;
+    showBubble(`おかえり！${name}だぞ！`);
+    setMsg(`おかえり！${name}だよ！`);
+    playBGM('main');
+  }, 400);
+}
+
 function onNameInput() {
   const val = document.getElementById('nameInput').value.trim();
   document.getElementById('nameStartBtn').disabled = val.length === 0;
@@ -1106,18 +1205,22 @@ function onNameInput() {
 function startGame() {
   const name = document.getElementById('nameInput').value.trim();
   if (!name) return;
-  state.petName = name;
+  // セーブデータを完全リセットしてから新規スタート
+  localStorage.removeItem(SAVE_KEY);
+  clearPendingPoops();
+  state = {...DEFAULT, lastDate: new Date().toDateString(), petName: name, poopPositions:[], bodyType:'normal'};
+  updateUI(); setAnim(autoAnim());
   document.getElementById('gameTitle').textContent = `🫵 ${name} 🫵`;
   setMsg(`やあ！おれは${name}だ！よろしくな！`);
-  showBubble(`${name}だぞ！よろしく！`);
   const ns = document.getElementById('nameScreen');
   ns.classList.add('hide');
   setTimeout(() => ns.style.display = 'none', 500);
-  spawnFx(['🎉','⭐','✨','🫵']);
+  setTimeout(() => { showBubble(`${name}だぞ！よろしく！`); spawnFx(['🎉','⭐','✨','🫵']); playBGM('main'); }, 600);
   saveGame();
 }
 
 function skipNameScreen() {
+  document.getElementById('selectScreen').style.display = 'none';
   document.getElementById('nameScreen').style.display = 'none';
 }
 
@@ -1136,19 +1239,24 @@ processPendingPoops();
 updateUI();
 setAnim(autoAnim());
 
-// セーブデータあり（名前もあり）→ スタート画面スキップ
+// セーブデータあり → 選択画面を表示（続きorリセット）
 if (saved && saved.petName) {
   const name = saved.petName;
-  document.getElementById('gameTitle').textContent = `🫵 ${name} 🫵`;
-  skipNameScreen();
-  setTimeout(() => {
-    showBubble(`おかえり！${name}だぞ！`);
-    setMsg(`おかえり！${name}だよ！`);
-  }, 600);
+  document.getElementById('selectMsg').textContent = `${name}の続きを育てる？`;
+  document.getElementById('continueBtn').textContent = `続きを育てる（${name}）🫵`;
 } else {
-  // 新規 → 名前入力画面を表示
-  // （nameScreenはデフォルトで表示済み）
+  document.getElementById('selectScreen').style.display = 'none';
+  document.getElementById('nameScreen').style.display = 'flex';
 }
+
+// タイトルBGMは最初のタップで再生（ブラウザのautoplay制限対策）
+document.addEventListener('pointerdown', () => {
+  if (currentBGM === null && state.alive) {
+    const isOnScreen = document.getElementById('selectScreen').style.display !== 'none' ||
+                       document.getElementById('nameScreen').style.display !== 'none';
+    playBGM(isOnScreen ? 'title' : 'main');
+  }
+}, { once: true });
 </script>
 </body>
 </html>
