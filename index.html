@@ -1265,6 +1265,18 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js');
 }
 
+// アプリ非表示時に音を止める・戻ったら再開
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    Object.values(AUDIO).forEach(a => a.pause());
+  } else {
+    // BGMだけ再開（SEは再開しない）
+    if (currentBGM && AUDIO[currentBGM] && state.alive) {
+      AUDIO[currentBGM].play().catch(() => {});
+    }
+  }
+});
+
 // ===================================================
 // 初期化
 // ===================================================
