@@ -702,40 +702,22 @@ function openMenu() {
   if (!state.alive) return;
   if (state.sleeping) { showBubble('Zz…起こして…'); return; }
   checkDayReset();
-  const isPenalty = state.mealsToday >= MAX_FREE_MEALS;
-  document.getElementById('menuCountLabel').textContent =
-    isPenalty ? `⚠️ 本日${state.mealsToday}食目（食べ過ぎ！）` : `本日${state.mealsToday}/${MAX_FREE_MEALS}食`;
 
   const body = document.getElementById('menuBody');
   body.innerHTML = '';
 
-  // 食べ過ぎ警告バナー
-  if (isPenalty) {
-    const warn = document.createElement('div');
-    warn.style.cssText = 'background:#5a1a00;border-radius:8px;padding:8px;margin-bottom:12px;font-size:9px;color:#ffaa80;text-align:center;';
-    warn.textContent = '⚠️ 食べ過ぎ！この後は満足↑・健康↓・体重↑になるよ';
-    body.appendChild(warn);
-  }
-
   Object.entries(MENU).forEach(([cat, items]) => {
     const catEl = document.createElement('div');
     catEl.className = 'menu-cat';
-    catEl.innerHTML = `<div class="menu-cat-title">${cat}</div><div class="menu-items" id="cat_items"></div>`;
+    catEl.innerHTML = `<div class="menu-cat-title">${cat}</div><div class="menu-items"></div>`;
     const grid = catEl.querySelector('.menu-items');
 
     items.forEach(item => {
       const btn = document.createElement('button');
-      btn.className = 'menu-item' + (isPenalty ? ' penalty' : '');
-      const eff = isPenalty ? PENALTY : item;
+      btn.className = 'menu-item';
       btn.innerHTML = `
         <span class="menu-item-emoji">${item.emoji}</span>
-        <span class="menu-item-name">${item.name}</span>
-        <div class="menu-item-stats">
-          <span class="stat-good">😊+${eff.satisfy}</span>
-          <span class="${eff.health >= 0 ? 'stat-good' : 'stat-bad'}">💪${eff.health >= 0 ? '+' : ''}${eff.health}</span>
-          <span class="${eff.weight <= 0 ? 'stat-good' : 'stat-bad'}">⚖️${eff.weight >= 0 ? '+' : ''}${eff.weight}</span>
-        </div>
-        <div style="font-size:6px;color:#6a6a9a;text-align:center;margin-top:2px;">${isPenalty ? '600' : item.kcal}kcal</div>`;
+        <span class="menu-item-name">${item.name}</span>`;
       btn.onclick = () => eat(item);
       grid.appendChild(btn);
     });
@@ -1113,14 +1095,12 @@ function startBreath() {
   openMg(`
     <div class="mg-title">💨 息切れチャレンジ！</div>
     <div class="mg-info">10秒間ひたすら連打！</div>
-    <div class="mg-screen" id="breathScreen">
-      <div class="breath-tap-area" id="breathTap">
-        <div class="breath-circle" id="breathCircle" onclick="breathTap()" style="cursor:pointer;">
-          <span class="breath-count-big" id="breathCountDisp">0</span>
-          <span class="breath-label">たたけ！</span>
-        </div>
+    <div class="mg-screen" id="breathScreen" style="display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;">
+      <div id="breathCircle" style="width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,#4040c0,#202080);border:3px solid #6060e0;display:flex;align-items:center;justify-content:center;flex-direction:column;box-shadow:0 0 30px rgba(80,80,220,0.4);transition:transform 0.05s;">
+        <span id="breathCountDisp" style="font-size:40px;color:#f5e6c8;line-height:1;">0</span>
+        <span style="font-size:9px;color:#9090d0;">たたけ！</span>
       </div>
-      <div class="breath-timer-bar" id="breathBar" style="width:100%;"></div>
+      <div id="breathBar" style="position:absolute;bottom:0;left:0;height:4px;width:100%;background:linear-gradient(90deg,#6060e0,#c060e0);border-radius:0 0 8px 8px;transition:width 0.1s linear;"></div>
     </div>
     <div class="mg-info" id="breathMsg">ひたすら押せ！</div>
     <div class="mg-btn-row">
@@ -1128,15 +1108,13 @@ function startBreath() {
     </div>
   `);
 
-  // タッチイベントも追加（innerHTML後にsetTimeout）
+  // mg-screenにタップ・クリック・タッチ全部登録
   setTimeout(() => {
-    const circle = document.getElementById('breathCircle');
-    if (circle) {
-      circle.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        breathTap();
-      }, { passive: false });
-    }
+    const screen = document.getElementById('breathScreen');
+    if (!screen) return;
+    const handler = (e) => { e.preventDefault(); breathTap(); };
+    screen.addEventListener('click', handler);
+    screen.addEventListener('touchstart', handler, { passive: false });
   }, 100);
 
   breathTimer = setInterval(() => {
