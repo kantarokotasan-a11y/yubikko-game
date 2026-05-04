@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ゆびっこ">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>ゆびっこ育成ゲーム</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
@@ -229,7 +229,7 @@ body{
       <div class="meal-count" id="mealCount">🍽️ 本日0食</div>
       <div class="pet-area">
         <div class="shadow"></div>
-        <img class="pet-img s-idle body-normal" id="petImg" src="assets/hair0.png" alt="ゆびっこ">
+        <img class="pet-img s-idle body-normal" id="petImg" src="hair0.png" alt="ゆびっこ">
       </div>
       <div class="bubble" id="bubble">よろしくな！</div>
       <div class="fx" id="fx"></div>
@@ -511,27 +511,27 @@ const HAIR = [
 function getBodyFile(bodyType, hairStage) {
   // つるつる（hair4）専用PNG
   if (hairStage >= 4) {
-    if (bodyType === 'macho') return 'assets/body-macho-bald.png';
-    if (bodyType === 'fat')   return 'assets/body-fat-bald.png';
-    if (bodyType === 'sick')  return 'assets/body-sick-bald.png';
-    if (bodyType === 'thin')  return 'assets/hair4.png'; // ガリ×つるつる→hair4で代用
-    return 'assets/hair4.png'; // normal×つるつる
+    if (bodyType === 'macho') return 'body-macho-bald.png';
+    if (bodyType === 'fat')   return 'body-fat-bald.png';
+    if (bodyType === 'sick')  return 'body-sick-bald.png';
+    if (bodyType === 'thin')  return 'hair4.png'; // ガリ×つるつる→hair4で代用
+    return 'hair4.png'; // normal×つるつる
   }
   // ほぼ禿げ（hair3）専用PNG
   if (hairStage === 3) {
-    if (bodyType === 'macho') return 'assets/body-macho-hair3.png';
-    if (bodyType === 'fat')   return 'assets/body-fat-hair3.png';
-    if (bodyType === 'thin')  return 'assets/body-thin-hair3.png';
-    if (bodyType === 'sick')  return 'assets/body-sick-hair3.png';
-    return 'assets/hair3.png'; // normal×ほぼ禿げ
+    if (bodyType === 'macho') return 'body-macho-hair3.png';
+    if (bodyType === 'fat')   return 'body-fat-hair3.png';
+    if (bodyType === 'thin')  return 'body-thin-hair3.png';
+    if (bodyType === 'sick')  return 'body-sick-hair3.png';
+    return 'hair3.png'; // normal×ほぼ禿げ
   }
   // hair0〜2はbodyTypeのPNGをベースに（髪の変化はhairPNGで対応）
-  if (bodyType === 'macho') return 'assets/body-macho.png';
-  if (bodyType === 'fat')   return 'assets/body-fat.png';
-  if (bodyType === 'thin')  return 'assets/body-thin.png';
-  if (bodyType === 'sick')  return 'assets/body-sick.png';
+  if (bodyType === 'macho') return 'body-macho.png';
+  if (bodyType === 'fat')   return 'body-fat.png';
+  if (bodyType === 'thin')  return 'body-thin.png';
+  if (bodyType === 'sick')  return 'body-sick.png';
   // normal: 禿げ段階のhairPNGを使う
-  const hairFiles = ['assets/hair0.png','assets/hair1.png','assets/hair2.png','assets/hair3.png','assets/hair4.png'];
+  const hairFiles = ['hair0.png','hair1.png','hair2.png','hair3.png','hair4.png'];
   return hairFiles[hairStage];
 }
 
@@ -571,7 +571,7 @@ function updateCharacter() {
   const bodyType = state.bodyType || 'normal';
 
   const newFile = getBodyFile(bodyType, ns);
-  const fileChanged = hairChanged || newFile !== petImg.src.split('/').pop().replace('assets/','');
+  const fileChanged = hairChanged || newFile !== petImg.src.split('/').pop().replace('','');
 
   if (fileChanged) {
     petImg.style.opacity = '0';
@@ -1138,12 +1138,12 @@ function endBreath(quit) {
 // 音楽・SE システム
 // ===================================================
 const AUDIO = {
-  title:    new Audio('assets/bgm-title.mp3'),
-  main:     new Audio('assets/bgm-main.mp3'),
-  minigame: new Audio('assets/bgm-minigame.mp3'),
-  levelup:  new Audio('assets/se-levelup.mp3'),
-  gameover: new Audio('assets/se-gameover.mp3'),
-  poop:     new Audio('assets/se-poop.mp3'),
+  title:    new Audio('bgm-title.mp3'),
+  main:     new Audio('bgm-main.mp3'),
+  minigame: new Audio('bgm-minigame.mp3'),
+  levelup:  new Audio('se-levelup.mp3'),
+  gameover: new Audio('se-gameover.mp3'),
+  poop:     new Audio('se-poop.mp3'),
 };
 AUDIO.title.loop = true; AUDIO.main.loop = true; AUDIO.minigame.loop = true;
 AUDIO.title.volume = 0.6; AUDIO.main.volume = 0.5; AUDIO.minigame.volume = 0.5;

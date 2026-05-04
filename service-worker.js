@@ -3,12 +3,12 @@ const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './assets/bgm-title.mp3',
-  './assets/bgm-main.mp3',
-  './assets/bgm-minigame.mp3',
-  './assets/se-levelup.mp3',
-  './assets/se-gameover.mp3',
-  './assets/se-poop.mp3',
+  './bgm-title.mp3',
+  './bgm-main.mp3',
+  './bgm-minigame.mp3',
+  './se-levelup.mp3',
+  './se-gameover.mp3',
+  './se-poop.mp3',
 ];
 
 // インストール時にキャッシュ
