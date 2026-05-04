@@ -24,95 +24,66 @@ body{
 }
 .game-title{color:#f5e6c8;font-size:12px;letter-spacing:4px;text-shadow:0 0 12px rgba(245,230,200,0.5);}
 
-/* ===== デバイス ===== */
-.device{
-  width:min(300px,92vw);
-  background:linear-gradient(160deg,#f5e6c8 0%,#e8d5a3 40%,#d4b87a 100%);
-  border-radius:40px 40px 60px 60px;
-  padding:16px 16px 24px;
-  box-shadow:0 0 0 4px #b8954a,0 0 0 7px #8a6c2a,0 20px 60px rgba(0,0,0,0.8),
-    inset 0 2px 6px rgba(255,255,255,0.5),inset 0 -4px 8px rgba(0,0,0,0.15);
-}
+/* デバイス */
+.device{width:min(300px,92vw);background:linear-gradient(160deg,#f5e6c8 0%,#e8d5a3 40%,#d4b87a 100%);border-radius:40px 40px 60px 60px;padding:16px 16px 24px;box-shadow:0 0 0 4px #b8954a,0 0 0 7px #8a6c2a,0 20px 60px rgba(0,0,0,0.8),inset 0 2px 6px rgba(255,255,255,0.5),inset 0 -4px 8px rgba(0,0,0,0.15);}
 
-/* ===== スクリーン ===== */
+/* スクリーン */
 .screen-bezel{background:#3a2a10;border-radius:14px;padding:8px;box-shadow:inset 0 4px 12px rgba(0,0,0,0.7);margin-bottom:14px;}
 .screen{background:linear-gradient(180deg,#b8d878,#c8e888);border-radius:8px;width:100%;height:200px;position:relative;overflow:hidden;}
 .screen::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0px,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 3px);pointer-events:none;z-index:20;border-radius:8px;}
 
-/* ===== ステータスバー ===== */
-.status-area{position:absolute;top:6px;left:7px;right:7px;z-index:5;display:flex;flex-direction:column;gap:2px;}
-.stat-row{display:flex;align-items:center;gap:3px;font-size:7px;color:#2a4a08;}
-.stat-label{width:36px;font-size:6px;}
-.stat-bar-bg{flex:1;height:5px;background:#90b850;border-radius:2px;overflow:hidden;}
-.stat-bar-fill{height:100%;background:#2a4a08;border-radius:2px;transition:width 0.6s cubic-bezier(0.34,1.56,0.64,1);}
-.stat-bar-fill.health-high{background:#2a6a08;}
-.stat-bar-fill.health-mid {background:#8a6a00;}
-.stat-bar-fill.health-low {background:#aa3300;}
-.stat-bar-fill.health-crit{background:#cc0000;}
-.stat-num{font-size:6px;width:18px;text-align:right;color:#2a4a08;}
+/* バッジ（禿げ・体型） */
+.badges{position:absolute;top:6px;left:7px;z-index:5;font-size:7px;color:#2a4a08;line-height:1.8;}
+/* 食事カウンター */
+.meal-count{position:absolute;top:6px;right:7px;z-index:5;font-size:8px;color:#2a4a08;text-align:right;line-height:1.8;}
 
-/* ===== バッジ類 ===== */
-.badges{position:absolute;top:6px;right:7px;z-index:5;text-align:right;font-size:7px;color:#2a4a08;line-height:1.7;}
-
-/* ===== キャラエリア ===== */
-.pet-area{position:absolute;bottom:26px;left:0;right:0;display:flex;justify-content:center;align-items:flex-end;height:125px;}
-.pet-img{
-  height:120px;
-  width:auto;
-  object-fit:contain;
-  transform-origin:bottom center;
-  filter:drop-shadow(0 6px 8px rgba(0,0,0,0.4));
-  transition:opacity 0.35s ease, transform 0.8s cubic-bezier(0.34,1.56,0.64,1);
-}
-/* 体型スケール（横幅だけ変える） */
+/* キャラエリア */
+.pet-area{position:absolute;bottom:26px;left:0;right:0;display:flex;justify-content:center;align-items:flex-end;height:130px;}
+.pet-img{height:125px;width:auto;object-fit:contain;transform-origin:bottom center;filter:drop-shadow(0 6px 8px rgba(0,0,0,0.4));transition:opacity 0.35s ease,transform 0.8s cubic-bezier(0.34,1.56,0.64,1);}
 .pet-img.body-thin   {transform:scaleX(0.78);}
 .pet-img.body-normal {transform:scaleX(1.0);}
 .pet-img.body-chubby {transform:scaleX(1.18);}
 .pet-img.body-fat    {transform:scaleX(1.38);}
 
 /* アニメーション */
-@keyframes idle-bounce {0%,100%{translate:0 0;rotate:0deg;}50%{translate:0 -8px;rotate:-2deg;}}
-@keyframes happy-jump  {0%,100%{translate:0 0;rotate:-4deg;}25%{translate:0 -14px;rotate:4deg;}75%{translate:0 -8px;rotate:-2deg;}}
-@keyframes sad-droop   {0%,100%{translate:0 0;rotate:-2deg;}50%{translate:0 3px;rotate:2deg;}}
-@keyframes angry-shake {0%,100%{translate:0 0;}20%{translate:-6px 0;rotate:-4deg;}40%{translate:6px 0;rotate:4deg;}60%{translate:-4px 0;}80%{translate:4px 0;}}
-@keyframes sleep-sway  {0%,100%{rotate:-5deg;}50%{rotate:5deg;translate:0 2px;}}
-@keyframes eating      {0%,100%{translate:0 0;scale:1;}30%{translate:0 -5px;scale:1.08;}60%{translate:0 2px;scale:0.96;}}
-@keyframes sick-wobble {0%,100%{rotate:0deg;}25%{rotate:-8deg;translate:0 2px;}75%{rotate:8deg;translate:0 2px;}}
-@keyframes death-fall  {0%{rotate:0deg;translate:0 0;opacity:1;}60%{rotate:90deg;translate:0 10px;opacity:0.5;}100%{rotate:90deg;translate:0 30px;opacity:0;}}
-@keyframes bald-panic  {0%,100%{translate:0 0;scale:1;}20%{translate:0 -10px;scale:1.1;rotate:-5deg;}40%{translate:0 -5px;scale:0.95;rotate:5deg;}}
+@keyframes idle-bounce{0%,100%{translate:0 0;rotate:0deg;}50%{translate:0 -8px;rotate:-2deg;}}
+@keyframes happy-jump {0%,100%{translate:0 0;rotate:-4deg;}25%{translate:0 -14px;rotate:4deg;}75%{translate:0 -8px;rotate:-2deg;}}
+@keyframes sad-droop  {0%,100%{translate:0 0;rotate:-2deg;}50%{translate:0 3px;rotate:2deg;}}
+@keyframes sleep-sway {0%,100%{rotate:-5deg;}50%{rotate:5deg;translate:0 2px;}}
+@keyframes eating     {0%,100%{translate:0 0;scale:1;}30%{translate:0 -5px;scale:1.08;}60%{translate:0 2px;scale:0.96;}}
+@keyframes sick-wobble{0%,100%{rotate:0deg;}25%{rotate:-8deg;translate:0 2px;}75%{rotate:8deg;translate:0 2px;}}
+@keyframes death-fall {0%{rotate:0deg;translate:0 0;opacity:1;}60%{rotate:90deg;translate:0 10px;opacity:0.5;}100%{rotate:90deg;translate:0 30px;opacity:0;}}
+@keyframes bald-panic {0%,100%{translate:0 0;scale:1;}20%{translate:0 -10px;scale:1.1;rotate:-5deg;}40%{translate:0 -5px;scale:0.95;rotate:5deg;}}
+@keyframes flash-warn {0%,100%{background:linear-gradient(180deg,#b8d878,#c8e888);}50%{background:linear-gradient(180deg,#e8c878,#f0d888);}}
 
 .pet-img.s-idle   {animation:idle-bounce 2s    ease-in-out infinite;}
 .pet-img.s-happy  {animation:happy-jump  0.5s  ease-in-out infinite;}
 .pet-img.s-sad    {animation:sad-droop   2.5s  ease-in-out infinite;}
-.pet-img.s-angry  {animation:angry-shake 0.4s  ease-in-out infinite;}
 .pet-img.s-sleepy {animation:sleep-sway  3s    ease-in-out infinite;}
 .pet-img.s-eating {animation:eating      0.35s ease-in-out infinite;}
 .pet-img.s-sick   {animation:sick-wobble 1s    ease-in-out infinite;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3)) hue-rotate(60deg) saturate(0.7);}
 .pet-img.s-dead   {animation:death-fall  1.5s  ease-in     forwards;}
 .pet-img.s-bald   {animation:bald-panic  0.4s  ease-in-out infinite;}
-
-/* スクリーンフラッシュ */
-@keyframes flash-warn {0%,100%{background:linear-gradient(180deg,#b8d878,#c8e888);}50%{background:linear-gradient(180deg,#e8c878,#f0d888);}}
-.screen.flashing {animation:flash-warn 0.5s ease-in-out 3;}
+.screen.flashing  {animation:flash-warn  0.5s  ease-in-out 3;}
 
 /* 吹き出し */
-.bubble{position:absolute;top:36px;right:7px;background:white;border:2px solid #2a4a08;border-radius:10px;padding:3px 8px;font-size:10px;z-index:15;opacity:0;transform:scale(0);transition:opacity 0.2s,transform 0.2s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;color:#2a4a08;pointer-events:none;max-width:150px;white-space:normal;text-align:center;}
-.bubble.show{opacity:1;transform:scale(1);}
-.bubble::after{content:'';position:absolute;bottom:-8px;left:12px;border:4px solid transparent;border-top:4px solid #2a4a08;}
+.bubble{position:absolute;bottom:32px;left:50%;transform:translateX(-50%) scale(0);background:white;border:2px solid #2a4a08;border-radius:10px;padding:4px 10px;font-size:10px;z-index:15;opacity:0;transition:opacity 0.2s,transform 0.2s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;color:#2a4a08;pointer-events:none;}
+.bubble.show{opacity:1;transform:translateX(-50%) scale(1);}
+.bubble::after{content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top:4px solid #2a4a08;}
 
 /* エフェクト */
 .fx{position:absolute;inset:0;pointer-events:none;z-index:10;overflow:hidden;}
-.fxp{position:absolute;font-size:15px;animation:pfx 1s ease-out forwards;}
-@keyframes pfx{0%{translate:0 0;scale:0.5;opacity:1;}100%{translate:0 -60px;scale:1.2;opacity:0;}}
+.fxp{position:absolute;font-size:16px;animation:pfx 1s ease-out forwards;}
+@keyframes pfx{0%{translate:0 0;scale:0.5;opacity:1;}100%{translate:0 -65px;scale:1.2;opacity:0;}}
 
 /* 地面・影 */
 .ground{position:absolute;bottom:0;left:0;right:0;height:26px;background:repeating-linear-gradient(90deg,#90b840 0,#90b840 12px,#80a830 12px,#80a830 24px);border-radius:0 0 8px 8px;}
 .shadow{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);width:60px;height:8px;background:radial-gradient(ellipse,rgba(0,0,0,0.3) 0%,transparent 70%);border-radius:50%;}
 
 /* メッセージバー */
-.msg-bar{background:#3a2a10;border-radius:0 0 8px 8px;margin:-8px -8px 10px;padding:4px 10px;font-size:9px;color:#c8e888;text-align:center;min-height:20px;}
+.msg-bar{background:#3a2a10;border-radius:0 0 8px 8px;margin:-8px -8px 10px;padding:4px 10px;font-size:9px;color:#c8e888;text-align:center;min-height:20px;line-height:1.5;}
 
-/* ===== ボタン ===== */
+/* ボタン */
 .btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .btn{height:44px;border-radius:22px;border:none;cursor:pointer;font-family:'DotGothic16',monospace;font-size:11px;display:flex;align-items:center;justify-content:center;gap:5px;transition:transform 0.1s,box-shadow 0.1s;user-select:none;}
 .btn:active{transform:scale(0.93) translateY(2px);}
@@ -126,27 +97,6 @@ body{
 .bc:active{box-shadow:0 1px 0 #1a6a96,0 2px 6px rgba(0,0,0,0.3);}
 .bs:active{box-shadow:0 1px 0 #4a2a9e,0 2px 6px rgba(0,0,0,0.3);}
 
-/* ===== ミニゲームオーバーレイ ===== */
-.minigame-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.85);
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  z-index:100;opacity:0;pointer-events:none;transition:opacity 0.3s;
-}
-.minigame-overlay.show{opacity:1;pointer-events:all;}
-.minigame-box{
-  width:min(290px,90vw);background:#1a3a00;border-radius:20px;padding:16px;
-  border:3px solid #4a8a10;box-shadow:0 0 30px rgba(74,138,16,0.4);
-}
-.mg-title{color:#c8e888;font-size:14px;text-align:center;margin-bottom:12px;}
-.mg-screen{background:#0a2000;border-radius:10px;height:180px;position:relative;overflow:hidden;margin-bottom:12px;cursor:pointer;}
-.mg-score{color:#c8e888;font-size:10px;text-align:center;margin-bottom:8px;}
-.mg-close{background:#c8e888;color:#1a3a00;border:none;padding:8px 24px;border-radius:16px;font-family:'DotGothic16',monospace;font-size:11px;cursor:pointer;display:block;margin:0 auto;}
-
-/* 食べ物タップゲーム */
-.food-item{position:absolute;font-size:24px;cursor:pointer;user-select:none;transition:transform 0.1s;animation:fall linear forwards;}
-@keyframes fall{from{top:-40px;}to{top:200px;}}
-.food-item:active{transform:scale(0.7);}
-
 /* ゲームオーバー */
 .overlay{position:absolute;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;z-index:30;border-radius:8px;opacity:0;pointer-events:none;transition:opacity 0.6s;}
 .overlay.show{opacity:1;pointer-events:all;}
@@ -154,35 +104,126 @@ body{
 .ov-text{color:#c8e888;font-size:14px;text-align:center;line-height:1.8;}
 .ov-sub{color:#90b060;font-size:8px;}
 .restart-btn{background:#c8e888;color:#1a3a00;border:none;padding:8px 20px;border-radius:16px;font-family:'DotGothic16',monospace;font-size:10px;cursor:pointer;margin-top:4px;}
+
+/* ===== 食事メニューオーバーレイ ===== */
+.menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);display:flex;align-items:flex-end;justify-content:center;z-index:100;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.menu-overlay.show{opacity:1;pointer-events:all;}
+.menu-sheet{width:min(320px,100vw);background:#1a1a2e;border-radius:24px 24px 0 0;padding:16px 16px 32px;border-top:3px solid #4a3a8a;max-height:80vh;overflow-y:auto;}
+.menu-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.menu-title{color:#f5e6c8;font-size:13px;letter-spacing:2px;}
+.menu-count{color:#8a7ab8;font-size:9px;}
+.menu-close{background:none;border:none;color:#8a7ab8;font-size:20px;cursor:pointer;padding:4px;}
+.menu-cat{margin-bottom:14px;}
+.menu-cat-title{font-size:9px;color:#8a7ab8;margin-bottom:6px;padding-left:2px;letter-spacing:1px;}
+.menu-items{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.menu-item{background:#2a2a4e;border:none;border-radius:12px;padding:10px 8px;cursor:pointer;font-family:'DotGothic16',monospace;text-align:left;transition:all 0.1s;border:1px solid #3a3a6e;}
+.menu-item:active{transform:scale(0.95);background:#3a3a6e;}
+.menu-item-emoji{font-size:22px;display:block;text-align:center;margin-bottom:4px;}
+.menu-item-name{font-size:9px;color:#c8c8f0;display:block;text-align:center;}
+.menu-item-stats{font-size:7px;display:flex;justify-content:center;gap:4px;margin-top:3px;}
+.stat-good{color:#6ee86e;}
+.stat-bad {color:#ff8080;}
+.stat-neu {color:#f0d060;}
+/* 食べ過ぎペナルティ警告色 */
+.menu-item.penalty{border-color:#aa4400;background:#3a1a0e;}
+.menu-item.penalty .menu-item-name{color:#ffaa80;}
+
+/* ===== ミニゲーム共通オーバーレイ ===== */
+.mg-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.mg-overlay.show{opacity:1;pointer-events:all;}
+.mg-box{width:min(300px,94vw);background:#0a0a1e;border-radius:20px;padding:18px;border:2px solid #3a3a8a;box-shadow:0 0 40px rgba(80,80,200,0.3);display:flex;flex-direction:column;align-items:center;gap:12px;}
+.mg-title{color:#f5e6c8;font-size:14px;letter-spacing:2px;text-align:center;}
+.mg-sub{color:#8a8ab8;font-size:9px;text-align:center;}
+.mg-screen{width:100%;height:180px;background:#050510;border-radius:12px;position:relative;overflow:hidden;border:1px solid #2a2a6a;touch-action:none;}
+.mg-info{color:#c8e888;font-size:11px;text-align:center;min-height:18px;}
+.mg-result{color:#f5e6c8;font-size:13px;text-align:center;line-height:1.8;}
+.mg-btn-row{display:flex;gap:10px;}
+.mg-btn{background:#3a3a8a;color:#f5e6c8;border:none;padding:10px 20px;border-radius:14px;font-family:'DotGothic16',monospace;font-size:11px;cursor:pointer;}
+.mg-btn.primary{background:linear-gradient(145deg,#6060e0,#4040b0);box-shadow:0 3px 0 #202080;}
+.mg-btn.primary:active{transform:translateY(2px);box-shadow:0 1px 0 #202080;}
+.mg-btn.close{background:#2a2a4a;}
+
+/* ミニゲーム選択画面 */
+.mg-select-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;}
+.mg-select-btn{background:#1a1a3e;border:2px solid #3a3a8a;border-radius:14px;padding:14px 8px;cursor:pointer;font-family:'DotGothic16',monospace;text-align:center;transition:all 0.1s;}
+.mg-select-btn:active{transform:scale(0.95);background:#2a2a5e;}
+.mg-select-emoji{font-size:28px;display:block;margin-bottom:6px;}
+.mg-select-name{font-size:10px;color:#c8c8f0;display:block;}
+.mg-select-desc{font-size:7px;color:#7a7ab8;display:block;margin-top:3px;}
+
+/* ドラムタップ ノーツ */
+.drum-lane{position:absolute;bottom:0;top:0;width:22%;}
+.drum-note{position:absolute;width:80%;left:10%;height:32px;border-radius:8px;animation:note-fall linear forwards;}
+@keyframes note-fall{from{top:-40px;}to{top:100%;}}
+.drum-hit-zone{position:absolute;bottom:8px;left:5%;width:90%;height:36px;border:2px solid rgba(255,255,255,0.15);border-radius:8px;background:rgba(255,255,255,0.05);}
+.drum-judge{position:absolute;font-size:13px;font-weight:bold;animation:judge-pop 0.6s ease-out forwards;pointer-events:none;}
+@keyframes judge-pop{0%{opacity:1;translate:0 0;scale:1;}100%{opacity:0;translate:0 -30px;scale:1.4;}}
+.drum-lane-btn{position:absolute;bottom:0;left:0;right:0;height:52px;background:rgba(255,255,255,0.06);border-radius:0 0 8px 8px;cursor:pointer;border:none;}
+
+/* 💩スクリーン内表示 */
+.poop-item{position:absolute;font-size:22px;z-index:8;animation:poop-appear 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;cursor:default;user-select:none;}
+@keyframes poop-appear{from{scale:0;opacity:0;}to{scale:1;opacity:1;}}
+.poop-item.poop-shake{animation:poop-wobble 0.5s ease-in-out infinite;}
+@keyframes poop-wobble{0%,100%{rotate:-8deg;}50%{rotate:8deg;}}
+
+/* ===== 名前入力スタート画面 ===== */
+.name-screen{
+  position:fixed;inset:0;background:#1a1a2e;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;z-index:500;
+  background-image:radial-gradient(circle at 20% 50%,#2a1a3e 0%,transparent 50%),
+                   radial-gradient(circle at 80% 20%,#001a2a 0%,transparent 50%);
+  transition:opacity 0.5s;
+}
+.name-screen.hide{opacity:0;pointer-events:none;}
+.name-logo{color:#f5e6c8;font-size:14px;letter-spacing:4px;text-shadow:0 0 12px rgba(245,230,200,0.5);}
+.name-chara{width:130px;height:auto;filter:drop-shadow(0 8px 16px rgba(0,0,0,0.6));animation:idle-bounce 2s ease-in-out infinite;}
+.name-msg{color:#c8e888;font-size:10px;text-align:center;line-height:2;}
+.name-input{
+  width:min(240px,75vw);background:#0a0a2e;border:2px solid #4a3a8a;border-radius:14px;
+  padding:12px 16px;font-family:'DotGothic16',monospace;font-size:15px;
+  color:#f5e6c8;text-align:center;outline:none;transition:border-color 0.2s;
+}
+.name-input:focus{border-color:#8a6ae0;}
+.name-input::placeholder{color:#3a3a6a;}
+.name-start-btn{
+  background:linear-gradient(145deg,#8a6ae0,#6040c0);color:#f5e6c8;
+  border:none;padding:14px 36px;border-radius:24px;
+  font-family:'DotGothic16',monospace;font-size:13px;cursor:pointer;
+  box-shadow:0 4px 0 #3020a0,0 6px 20px rgba(100,60,220,0.4);
+  transition:all 0.1s;letter-spacing:2px;
+}
+.name-start-btn:active{transform:translateY(2px);box-shadow:0 2px 0 #3020a0;}
+.name-start-btn:disabled{opacity:0.35;cursor:not-allowed;}
 </style>
 </head>
 <body>
-<div class="game-title">🫵 ゆびっこ 🫵</div>
+
+<!-- 名前入力スタート画面 -->
+<div class="name-screen" id="nameScreen">
+  <div class="name-logo">🫵 ゆびっこ 🫵</div>
+  <img class="name-chara" src="assets/body-normal.png" alt="ゆびっこ">
+  <div class="name-msg">あたらしいゆびっこが<br>やってきた！<br>なまえをつけてあげよう</div>
+  <input class="name-input" id="nameInput" type="text" maxlength="8" placeholder="なまえ（8文字まで）" oninput="onNameInput()">
+  <button class="name-start-btn" id="nameStartBtn" onclick="startGame()" disabled>飼育スタート！</button>
+</div>
+
+<div class="game-title" id="gameTitle">🫵 ゆびっこ 🫵</div>
 
 <div class="device">
   <div class="screen-bezel">
     <div class="msg-bar" id="msgBar">やあ！おれはゆびっこだ！よろしくな！</div>
     <div class="screen" id="mainScreen">
-
-      <div class="status-area">
-        <div class="stat-row"><span class="stat-label">🍖おなか</span><div class="stat-bar-bg"><div class="stat-bar-fill" id="bH" style="width:80%"></div></div><span class="stat-num" id="nH">80</span></div>
-        <div class="stat-row"><span class="stat-label">😊きもち</span><div class="stat-bar-bg"><div class="stat-bar-fill" id="bM" style="width:70%"></div></div><span class="stat-num" id="nM">70</span></div>
-        <div class="stat-row"><span class="stat-label">💪けんこう</span><div class="stat-bar-bg"><div class="stat-bar-fill health-high" id="bK" style="width:100%"></div></div><span class="stat-num" id="nK">100</span></div>
-        <div class="stat-row"><span class="stat-label">😴ねむい</span><div class="stat-bar-bg"><div class="stat-bar-fill" id="bS" style="width:20%"></div></div><span class="stat-num" id="nS">20</span></div>
-        <div class="stat-row"><span class="stat-label">⚖️たいじゅう</span><div class="stat-bar-bg"><div class="stat-bar-fill" id="bW" style="width:50%"></div></div><span class="stat-num" id="nW">50</span></div>
-      </div>
-
       <div class="badges" id="badges">💇フサフサ<br>⚖️ふつう</div>
-
+      <div class="meal-count" id="mealCount">🍽️ 本日0食</div>
       <div class="pet-area">
         <div class="shadow"></div>
         <img class="pet-img s-idle body-normal" id="petImg" src="assets/hair0.png" alt="ゆびっこ">
       </div>
-
       <div class="bubble" id="bubble">よろしくな！</div>
       <div class="fx" id="fx"></div>
+      <div id="poopArea"></div>
       <div class="ground"></div>
-
       <div class="overlay" id="overlay">
         <div class="ov-emoji">🫵💀</div>
         <div class="ov-text" id="ovText">ゆびっこは<br>逝ってしまった…</div>
@@ -191,186 +232,409 @@ body{
       </div>
     </div>
   </div>
-
   <div class="btn-grid">
-    <button class="btn bf" onclick="action('feed')"><span class="i">🍖</span>ごはん</button>
-    <button class="btn bp" onclick="openMinigame('run')"><span class="i">🏃</span>うんどう</button>
-    <button class="btn bc" onclick="action('clean')"><span class="i">🛁</span>おふろ</button>
+    <button class="btn bf" onclick="openMenu()"><span class="i">🍽️</span>ごはん</button>
+    <button class="btn bp" onclick="action('run')"><span class="i">🏃</span>うんどう</button>
+    <button class="btn bc" onclick="action('clean')"><span class="i">🧹</span>せいそう</button>
     <button class="btn bs" onclick="action('sleep')"><span class="i">💤</span>ねかす</button>
   </div>
 </div>
 
-<!-- ミニゲーム：食べ物キャッチ（うんどう） -->
-<div class="minigame-overlay" id="mgOverlay">
-  <div class="minigame-box">
-    <div class="mg-title" id="mgTitle">🏃 はしれ！ゆびっこ！</div>
-    <div class="mg-score" id="mgScore">タップして食べ物をよけろ！あと <span id="mgTimer">10</span>秒</div>
-    <div class="mg-screen" id="mgScreen"></div>
-    <button class="mg-close" onclick="closeMinigame()">やめる</button>
+<!-- ミニゲームオーバーレイ -->
+<div class="mg-overlay" id="mgOverlay">
+  <div class="mg-box" id="mgBox"></div>
+</div>
+
+<!-- 食事メニュー -->
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-sheet">
+    <div class="menu-header">
+      <span class="menu-title">🍽️ なにたべる？</span>
+      <span class="menu-count" id="menuCountLabel"></span>
+      <button class="menu-close" onclick="closeMenu()">✕</button>
+    </div>
+    <div id="menuBody"></div>
   </div>
 </div>
 
 <script>
 // ===================================================
-// セーブ/ロード
+// 食事メニュー定義
 // ===================================================
-const SAVE_KEY = 'yubicci_save';
+const MENU = {
+  'ジャンク系🔥': [
+    {name:'ラーメン',    emoji:'🍜', satisfy:30, health:-10, weight:+8,  kcal:800},
+    {name:'ハンバーガー',emoji:'🍔', satisfy:25, health:-12, weight:+10, kcal:900},
+    {name:'ステーキ',    emoji:'🥩', satisfy:28, health:-5,  weight:+6,  kcal:850},
+    {name:'ピザ',        emoji:'🍕', satisfy:26, health:-11, weight:+9,  kcal:950},
+    {name:'唐揚げ',      emoji:'🍗', satisfy:22, health:-8,  weight:+7,  kcal:700},
+    {name:'カレー',      emoji:'🍛', satisfy:24, health:-6,  weight:+5,  kcal:750},
+  ],
+  'ふつう系🍱': [
+    {name:'お寿司',      emoji:'🍣', satisfy:20, health:+5,  weight:+3,  kcal:500},
+    {name:'おにぎり',    emoji:'🍙', satisfy:15, health:+3,  weight:+2,  kcal:400},
+    {name:'うどん',      emoji:'🍲', satisfy:18, health:+2,  weight:+3,  kcal:450},
+    {name:'卵かけご飯',  emoji:'🥚', satisfy:14, health:+4,  weight:+2,  kcal:380},
+    {name:'親子丼',      emoji:'🥘', satisfy:20, health:+0,  weight:+4,  kcal:550},
+    {name:'サンドイッチ',emoji:'🥪', satisfy:16, health:+2,  weight:+2,  kcal:420},
+  ],
+  'ヘルシー系🥗': [
+    {name:'サラダ',      emoji:'🥗', satisfy:8,  health:+20, weight:-5,  kcal:120},
+    {name:'焼き魚',      emoji:'🐟', satisfy:15, health:+15, weight:-2,  kcal:250},
+    {name:'煮物',        emoji:'🥣', satisfy:12, health:+18, weight:-3,  kcal:200},
+    {name:'豆腐',        emoji:'🫙', satisfy:10, health:+16, weight:-4,  kcal:150},
+    {name:'フルーツ',    emoji:'🍎', satisfy:12, health:+12, weight:-2,  kcal:180},
+    {name:'野菜スープ',  emoji:'🍵', satisfy:10, health:+14, weight:-3,  kcal:100},
+  ],
+};
+
+// 食べ過ぎ固定ペナルティ（5回目以降）
+const PENALTY = {satisfy:15, health:-18, weight:+12};
+const MAX_FREE_MEALS = 4; // 1日の個別効果上限
+
+// ===================================================
+// セーブ / ロード
+// ===================================================
+const SAVE_KEY = 'yubicci_v2';
+const POOP_QUEUE_KEY = 'yubicci_poop_queue';
+
 function saveGame() {
-  localStorage.setItem(SAVE_KEY, JSON.stringify({
-    ...state,
-    savedAt: Date.now()
-  }));
+  localStorage.setItem(SAVE_KEY, JSON.stringify({...state, savedAt:Date.now()}));
 }
+
+// 食後💩予定をキューに保存
+function savePendingPoop(scheduledAt) {
+  const queue = getPendingPoops();
+  queue.push(scheduledAt);
+  localStorage.setItem(POOP_QUEUE_KEY, JSON.stringify(queue));
+}
+
+function getPendingPoops() {
+  try { return JSON.parse(localStorage.getItem(POOP_QUEUE_KEY)) || []; }
+  catch(e) { return []; }
+}
+
+function clearPendingPoops() {
+  localStorage.removeItem(POOP_QUEUE_KEY);
+}
+
+// 起動時に期限切れの💩キューを処理
+function processPendingPoops() {
+  const queue = getPendingPoops();
+  const now = Date.now();
+  let remaining = [];
+  let poopsDue = 0;
+
+  queue.forEach(scheduledAt => {
+    if (scheduledAt <= now) {
+      poopsDue++;
+    } else {
+      remaining.push(scheduledAt);
+      // まだ時間が来てないものはタイマーをセット
+      const delay = scheduledAt - now;
+      setTimeout(() => {
+        if (!state.alive || state.poopCount >= POOP_MAX) return;
+        spawnPoop();
+        updateUI();
+        saveGame();
+        // キューから削除
+        const q = getPendingPoops().filter(t => t !== scheduledAt);
+        localStorage.setItem(POOP_QUEUE_KEY, JSON.stringify(q));
+      }, delay);
+    }
+  });
+
+  // 期限切れ分をまとめて処理
+  if (poopsDue > 0 && state.alive) {
+    const actualPoops = Math.min(poopsDue, POOP_MAX - state.poopCount);
+    for (let i = 0; i < actualPoops; i++) spawnPoop();
+    if (poopsDue > 0) setMsg(`💩が${poopsDue}個溜まってたよ！片付けて！`);
+  }
+
+  localStorage.setItem(POOP_QUEUE_KEY, JSON.stringify(remaining));
+}
+
 function loadGame() {
   try {
-    const raw = localStorage.getItem(SAVE_KEY);
-    if (!raw) return null;
-    const saved = JSON.parse(raw);
-    // 離れてた時間分ステータスを自動減少
-    const offlineSec = Math.min((Date.now() - saved.savedAt) / 1000, 3600);
-    const ticks = Math.floor(offlineSec / 5);
-    if (ticks > 0 && saved.alive) {
-      saved.hunger  = Math.max(0, saved.hunger  - ticks * 4);
-      saved.happy   = Math.max(0, saved.happy   - ticks * 3);
-      saved.sleep   = Math.min(100, saved.sleep + ticks * 4);
-      saved.health  = Math.max(0, saved.health  - (saved.hunger < 20 ? ticks * 3 : 0));
-      saved.age     += Math.floor(ticks / 12);
+    const s = JSON.parse(localStorage.getItem(SAVE_KEY));
+    if (!s) return null;
+    const savedDate = new Date(s.savedAt).toDateString();
+    const today     = new Date().toDateString();
+    if (savedDate !== today) s.mealsToday = 0;
+    const offlineMins = Math.min((Date.now() - s.savedAt) / 60000, 360);
+    if (s.alive && offlineMins > 0) {
+      s.satisfy = Math.max(0, s.satisfy - offlineMins * 0.8);
+      s.health  = s.satisfy < 20 ? Math.max(0, s.health - offlineMins * 0.5) : s.health;
+      s.weight  = s.weight + offlineMins * 0.1;
     }
-    return saved;
+    return s;
   } catch(e) { return null; }
 }
 
 // ===================================================
 // ゲーム状態
 // ===================================================
-const DEFAULT_STATE = {
-  hunger:80, happy:70, health:100, sleep:20, weight:50,
-  age:0, alive:true, sleeping:false, actionLock:false,
-  hairStage:0, bodyStage:1  // 0=痩せ 1=ふつう 2=ぽっちゃり 3=デブ
+const DEFAULT = {
+  satisfy:70, health:100, weight:50,
+  mealsToday:0,
+  calorie:0,
+  poopCount:0,
+  poopPositions:[],
+  bodyType:'normal',
+  alive:true, sleeping:false, actionLock:false,
+  hairStage:0,
 };
-
 const saved = loadGame();
-let state = saved && saved.alive ? {...DEFAULT_STATE, ...saved, actionLock:false} : {...DEFAULT_STATE};
-const startTick = Math.floor(Date.now()/5000) - (state.age * 12);
+let state = saved && saved.alive ? {...DEFAULT,...saved,actionLock:false} : {...DEFAULT};
 
-// 禿げ段階
+// 自然減少タイマー（1分ごと）
+setInterval(naturalDecay, 60000);
+function naturalDecay() {
+  if (!state.alive || state.sleeping) return;
+  state.satisfy = Math.max(0, state.satisfy - 5);
+  state.weight  = state.weight + 0.3;
+  if (state.satisfy < 20) state.health = Math.max(0, state.health - 3);
+  if (state.weight  > 85) state.health = Math.max(0, state.health - 2);
+  if (state.health <= 0) { gameover(); return; }
+  updateUI(); autoMsg(); saveGame();
+}
+
+// 💩ダメージタイマー（1時間ごと）
+setInterval(poopDecay, 3600000);
+function poopDecay() {
+  if (!state.alive || state.poopCount === 0) return;
+  state.health = Math.max(0, state.health - state.poopCount * 2);
+  if      (state.poopCount >= 3) showBubble('くさい…くさすぎる…');
+  else if (state.poopCount >= 2) showBubble('片付けてくれ…頼む…');
+  else                           showBubble('💩が…ある…');
+  if (state.health <= 0) { gameover(); return; }
+  updateUI(); saveGame();
+}
+
+// ===================================================
+// 💩システム
+// ===================================================
+const POOP_THRESHOLD = 250; // このkcalを超えたら💩1個
+const POOP_MAX = 3;
+
+function addCalorie(kcal) {
+  state.calorie += kcal;
+  while (state.calorie >= POOP_THRESHOLD && state.poopCount < POOP_MAX) {
+    state.calorie -= POOP_THRESHOLD;
+    const scheduledAt = Date.now() + 60 * 60 * 1000; // 1時間後
+    savePendingPoop(scheduledAt);
+    // アプリ開いてる間用のタイマーも仕掛ける
+    setTimeout(() => {
+      if (!state.alive || state.poopCount >= POOP_MAX) return;
+      spawnPoop();
+      updateUI();
+      saveGame();
+      const q = getPendingPoops().filter(t => t !== scheduledAt);
+      localStorage.setItem(POOP_QUEUE_KEY, JSON.stringify(q));
+    }, 60 * 60 * 1000);
+    setMsg('ごはん食べた！消化中…🍽️');
+  }
+  if (state.calorie >= POOP_THRESHOLD && state.poopCount >= POOP_MAX) {
+    state.calorie = POOP_THRESHOLD - 1;
+  }
+}
+
+function spawnPoop() {
+  state.poopCount = Math.min(POOP_MAX, state.poopCount + 1);
+  // ランダム座標（地面付近・キャラと重ならない位置）
+  const positions = [
+    {left:'12%', bottom:'28px'},
+    {left:'68%', bottom:'28px'},
+    {left:'38%', bottom:'28px'},
+  ];
+  state.poopPositions = positions.slice(0, state.poopCount);
+  renderPoops();
+  setMsg('💩 したよ！片付けてくれ！');
+  showBubble('うっ…💩しちゃった');
+  spawnFx(['💩','💨']);
+}
+
+function renderPoops() {
+  const area = document.getElementById('poopArea');
+  if (!area) return;
+  area.innerHTML = '';
+  state.poopPositions.forEach((pos, i) => {
+    const el = document.createElement('div');
+    el.className = 'poop-item' + (state.poopCount >= 2 ? ' poop-shake' : '');
+    el.textContent = '💩';
+    el.style.left   = pos.left;
+    el.style.bottom = pos.bottom;
+    area.appendChild(el);
+  });
+}
+
+
+// 日付変わったらmealsTodayリセット＋進化チェック
+function checkDayReset() {
+  checkMidnightEvolution();
+}
+
+// ===================================================
+// 禿げ・体型・進化定義
+// ===================================================
+
+// 禿げ段階（健康ベース）
 const HAIR = [
-  {th:80, file:'assets/hair0.png', label:'💇フサフサ', alert:null},
-  {th:60, file:'assets/hair1.png', label:'😰薄毛気味', alert:'…頭、涼しくない？'},
-  {th:40, file:'assets/hair2.png', label:'😱だいぶやばい', alert:'ちょ！頭！'},
-  {th:20, file:'assets/hair3.png', label:'🆘ほぼ禿げ', alert:'1本しかない！'},
-  {th:0,  file:'assets/hair4.png', label:'👴つるつる',  alert:'ついに…逝ったか…'},
-];
-// 体型段階
-const BODY = [
-  {label:'🦴ガリガリ', cls:'body-thin'},
-  {label:'⚖️ふつう',   cls:'body-normal'},
-  {label:'🍩ぽっちゃり',cls:'body-chubby'},
-  {label:'🐷デブ',     cls:'body-fat'},
+  {th:80, label:'💇フサフサ',    alert:null},
+  {th:60, label:'😰薄毛気味',    alert:'…頭、涼しくない？'},
+  {th:40, label:'😱だいぶやばい', alert:'ちょ！頭！'},
+  {th:20, label:'🆘ほぼ禿げ',    alert:'1本しかない！'},
+  {th:0,  label:'👴つるつる',    alert:'ついに…逝ったか…'},
 ];
 
-// ===================================================
-// メッセージ
-// ===================================================
-const MSG = {
-  idle:   ['よう！元気か？','ゆびっこだぞ！','なんか用か？','指ってすごくない？','サムズアップ得意！'],
-  hungry: ['腹減った…','めしくれ頼む','うぐぐ…'],
-  unhappy:['つまんね','遊んでくれよ','ひまだ〜'],
-  sick:   ['ぐえっ…','気分悪い…','うわぁ…'],
-  sleepy: ['ねむ…','Zz…','限界…'],
-  fat:    ['…重い','動きたくない…','ぽよぽよ'],
-  thin:   ['腹減りすぎ…','ガリガリだ…','肋骨見えそう'],
-  feed:   ['うんまい！！！','ありがとよ！','至福！','うっめ〜！'],
-  play:   ['いえええええ！','楽しいな〜！','最高！'],
-  clean:  ['さっぱり！','ピカピカ！','いい香り〜'],
-  sleep:  ['おやすみ…','Zz…','夢の中へ…'],
-  wake:   ['おはよ！','よく寝た！','充電完了！'],
-  full:   ['もう食えない！','満腹…'],
+// 体型タイプ（PNG直接差し替え）
+// type: 'normal'|'thin'|'fat'|'macho'|'sick'
+// isBald: true/false で禿げ版を使う
+
+// PNG対応表
+// body-normal.png, body-thin.png, body-fat.png, body-macho.png, body-sick.png
+// body-macho-bald.png（禿げマッチョ専用）
+// 他の禿げはhair1〜4.pngを使う（既存の禿げPNG）
+
+function getBodyFile(bodyType, hairStage) {
+  const isBald = hairStage >= 4; // つるつるのみ禿げPNG切り替え
+  if (bodyType === 'macho' && isBald) return 'assets/body-macho-bald.png';
+  if (bodyType === 'macho')  return 'assets/body-macho.png';
+  if (bodyType === 'fat')    return 'assets/body-fat.png';
+  if (bodyType === 'thin')   return 'assets/body-thin.png';
+  if (bodyType === 'sick')   return 'assets/body-sick.png';
+  // normal: 禿げ段階によってhair0〜4を使う
+  const hairFiles = ['assets/hair0.png','assets/hair1.png','assets/hair2.png','assets/hair3.png','assets/hair4.png'];
+  return hairFiles[hairStage];
+}
+
+// 体型ラベル
+const BODY_LABELS = {
+  normal: '⚖️ふつう',
+  thin:   '🦴ガリガリ',
+  fat:    '🐷デブ',
+  macho:  '💪マッチョ',
+  sick:   '🤒病弱',
 };
-const rnd = a => a[Math.floor(Math.random()*a.length)];
+
+const petImg = document.getElementById('petImg');
 
 // ===================================================
 // UI更新
 // ===================================================
-const petImg = document.getElementById('petImg');
-
 function updateUI() {
-  const s = state;
-  const pairs = [['bH','nH',s.hunger],['bM','nM',s.happy],['bK','nK',s.health],['bS','nS',s.sleep],['bW','nW',s.weight]];
-  pairs.forEach(([bid,nid,val]) => {
-    document.getElementById(bid).style.width = val + '%';
-    document.getElementById(nid).textContent = Math.round(val);
-  });
-  const hb = document.getElementById('bK');
-  hb.className = 'stat-bar-fill ' + (s.health>75?'health-high':s.health>50?'health-mid':s.health>25?'health-low':'health-crit');
-  updateHair();
-  updateBody();
+  checkDayReset();
+  updateCharacter();
+  renderPoops();
+  document.getElementById('mealCount').textContent =
+    `🍽️ 本日${state.mealsToday}食${state.mealsToday >= MAX_FREE_MEALS ? '⚠️' : ''}`;
 }
 
-function updateHair() {
-  const s = state;
+function updateCharacter() {
+  // 禿げ段階を計算
   let ns = 0;
-  if      (s.health < 20) ns = 4;
-  else if (s.health < 40) ns = 3;
-  else if (s.health < 60) ns = 2;
-  else if (s.health < 80) ns = 1;
-  const changed = ns !== s.hairStage;
-  s.hairStage = ns;
-  const stage = HAIR[ns];
-  if (changed) {
+  if      (state.health < 20) ns = 4;
+  else if (state.health < 40) ns = 3;
+  else if (state.health < 60) ns = 2;
+  else if (state.health < 80) ns = 1;
+  const hairChanged = ns !== state.hairStage;
+  state.hairStage = ns;
+
+  // 体型は0時進化で決まる（state.bodyType）
+  const bodyType = state.bodyType || 'normal';
+
+  const newFile = getBodyFile(bodyType, ns);
+  const fileChanged = hairChanged || newFile !== petImg.src.split('/').pop().replace('assets/','');
+
+  if (fileChanged) {
     petImg.style.opacity = '0';
-    setTimeout(() => { petImg.src = stage.file; petImg.style.opacity = '1'; }, 320);
-    if (stage.alert) {
-      showBubble(stage.alert); setMsg(stage.alert);
+    setTimeout(() => { petImg.src = newFile; petImg.style.opacity = '1'; }, 320);
+    if (hairChanged && HAIR[ns].alert) {
+      showBubble(HAIR[ns].alert); setMsg(HAIR[ns].alert);
       spawnFx(['😱','💨','🪮']);
       const sc = document.getElementById('mainScreen');
       sc.classList.add('flashing');
       setTimeout(() => sc.classList.remove('flashing'), 1600);
     }
   } else {
-    petImg.src = stage.file;
+    petImg.src = newFile;
   }
-  updateBadges();
-}
 
-function updateBody() {
-  const s = state;
-  let nb = 1;
-  if      (s.weight >= 80) nb = 3;
-  else if (s.weight >= 65) nb = 2;
-  else if (s.weight <= 25) nb = 0;
-  const changed = nb !== s.bodyStage;
-  s.bodyStage = nb;
+  // CSSスケールは撤廃（PNG差し替えで対応）
   ['body-thin','body-normal','body-chubby','body-fat'].forEach(c => petImg.classList.remove(c));
-  petImg.classList.add(BODY[nb].cls);
-  if (changed) spawnFx(nb > 1 ? ['⬆️','🍖','😅'] : ['⬇️','💨','😤']);
-  updateBadges();
+
+  document.getElementById('badges').innerHTML =
+    HAIR[ns].label + '<br>' + (BODY_LABELS[bodyType] || '⚖️ふつう');
 }
 
-function updateBadges() {
-  document.getElementById('badges').innerHTML =
-    HAIR[state.hairStage].label + '<br>' + BODY[state.bodyStage].label;
+// ===================================================
+// 0時進化システム
+// ===================================================
+function checkMidnightEvolution() {
+  const today = new Date().toDateString();
+  if (state.lastDate === today) return; // まだ日付変わってない
+  // 日付更新・食事リセット
+  state.mealsToday = 0;
+  state.lastDate = today;
+
+  const prevType = state.bodyType || 'normal';
+  let newType = 'normal';
+
+  // 進化判定
+  if (state.health < 30) {
+    newType = 'sick';   // 病弱：健康30未満
+  } else if (state.health >= 150 && state.weight <= 80) {
+    newType = 'macho';  // マッチョ：健康150以上かつ体重80以下
+  } else if (state.weight >= 130) {
+    newType = 'fat';    // デブ：体重130以上
+  } else if (state.weight <= 30) {
+    newType = 'thin';   // ガリガリ：体重30以下
+  } else {
+    newType = 'normal';
+  }
+
+  state.bodyType = newType;
+
+  if (newType !== prevType) {
+    // 進化演出
+    const evo = {
+      macho:  { msg:'💪 マッチョに進化した！！', fx:['💪','⭐','🔥'], bubble:'筋肉がっ…！' },
+      fat:    { msg:'🐷 デブに進化した…',        fx:['🐷','⬆️','😅'], bubble:'重い…体が重い…' },
+      thin:   { msg:'🦴 ガリガリに進化した…',    fx:['🦴','💨','😱'], bubble:'肋骨が…見える…' },
+      sick:   { msg:'🤒 病弱に進化した…',        fx:['🤒','💊','😰'], bubble:'体が…もたない…' },
+      normal: { msg:'⚖️ ふつうに戻った！',        fx:['✨','😊','👍'], bubble:'体が戻った気がする' },
+    };
+    const e = evo[newType];
+    setTimeout(() => {
+      setMsg(e.msg);
+      showBubble(e.bubble);
+      spawnFx(e.fx);
+      updateCharacter();
+    }, 500);
+  }
 }
+
+// 1分ごとに0時チェック
+setInterval(checkMidnightEvolution, 60000);
+
 
 // ===================================================
 // アニメーション
 // ===================================================
-const ANIMS = ['s-idle','s-happy','s-sad','s-angry','s-sleepy','s-eating','s-sick','s-dead','s-bald'];
+const ANIMS = ['s-idle','s-happy','s-sad','s-sleepy','s-eating','s-sick','s-dead','s-bald'];
 function setAnim(a, dur=0) {
   ANIMS.forEach(s => petImg.classList.remove(s));
   petImg.classList.add(a);
   if (dur > 0) setTimeout(() => setAnim(autoAnim()), dur);
 }
 function autoAnim() {
-  const s = state;
-  if (!s.alive)    return 's-dead';
-  if (s.sleeping)  return 's-sleepy';
-  if (s.health<20) return 's-bald';
-  if (s.health<35) return 's-sick';
-  if (s.sleep>75)  return 's-sleepy';
-  if (s.hunger<25||s.happy<25) return 's-sad';
-  if (s.weight>80) return 's-sad';
-  if (s.hunger>70&&s.happy>70&&s.health>70) return 's-happy';
+  if (!state.alive)                          return 's-dead';
+  if (state.sleeping)                        return 's-sleepy';
+  if (state.health < 20)                     return 's-bald';
+  if (state.health < 40 || state.bodyType === 'sick') return 's-sick';
+  if (state.satisfy < 25)                    return 's-sad';
+  if (state.bodyType === 'fat')              return 's-sad';
+  if (state.bodyType === 'macho' || (state.satisfy > 70 && state.health > 70)) return 's-happy';
   return 's-idle';
 }
 
@@ -379,208 +643,512 @@ function autoAnim() {
 // ===================================================
 function spawnFx(emojis) {
   const c = document.getElementById('fx');
-  for (let i=0;i<5;i++) setTimeout(()=>{
-    const el = document.createElement('div'); el.className='fxp';
+  for (let i=0;i<5;i++) setTimeout(() => {
+    const el = document.createElement('div'); el.className = 'fxp';
     el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    el.style.left   = (20+Math.random()*200)+'px';
-    el.style.bottom = (50+Math.random()*40)+'px';
-    c.appendChild(el); setTimeout(()=>el.remove(),1100);
+    el.style.left   = (15+Math.random()*200)+'px';
+    el.style.bottom = (40+Math.random()*50)+'px';
+    c.appendChild(el); setTimeout(() => el.remove(), 1100);
   }, i*80);
 }
 function showBubble(t) {
-  const b=document.getElementById('bubble');
-  b.textContent=t; b.classList.add('show');
-  clearTimeout(b._t); b._t=setTimeout(()=>b.classList.remove('show'),2400);
+  const b = document.getElementById('bubble');
+  b.textContent = t; b.classList.add('show');
+  clearTimeout(b._t); b._t = setTimeout(() => b.classList.remove('show'), 2600);
 }
-function setMsg(t) { document.getElementById('msgBar').textContent=t; }
+function setMsg(t) { document.getElementById('msgBar').textContent = t; }
+function autoMsg() {
+  if (state.sleeping) return;
+  if      (state.health  < 20)  setMsg('ぐえっ…頭も…体も限界…');
+  else if (state.weight  > 130) setMsg('…重い。動きたくない。');
+  else if (state.weight  < 25)  setMsg('腹減りすぎてガリガリだ…');
+  else if (state.satisfy < 20)  setMsg('腹減った…なんか食わせてくれ');
+  else if (state.satisfy > 150) setMsg('うまかった！最高に満足！');
+  else {
+    const idle = ['よう！元気か？','ゆびっこだぞ！','なんか用か？','指ってすごくない？'];
+    setMsg(idle[Math.floor(Math.random()*idle.length)]);
+  }
+}
 
 // ===================================================
-// アクション
+// 食事メニュー
+// ===================================================
+function openMenu() {
+  if (!state.alive) return;
+  if (state.sleeping) { showBubble('Zz…起こして…'); return; }
+  checkDayReset();
+  const isPenalty = state.mealsToday >= MAX_FREE_MEALS;
+  document.getElementById('menuCountLabel').textContent =
+    isPenalty ? `⚠️ 本日${state.mealsToday}食目（食べ過ぎ！）` : `本日${state.mealsToday}/${MAX_FREE_MEALS}食`;
+
+  const body = document.getElementById('menuBody');
+  body.innerHTML = '';
+
+  // 食べ過ぎ警告バナー
+  if (isPenalty) {
+    const warn = document.createElement('div');
+    warn.style.cssText = 'background:#5a1a00;border-radius:8px;padding:8px;margin-bottom:12px;font-size:9px;color:#ffaa80;text-align:center;';
+    warn.textContent = '⚠️ 食べ過ぎ！この後は満足↑・健康↓・体重↑になるよ';
+    body.appendChild(warn);
+  }
+
+  Object.entries(MENU).forEach(([cat, items]) => {
+    const catEl = document.createElement('div');
+    catEl.className = 'menu-cat';
+    catEl.innerHTML = `<div class="menu-cat-title">${cat}</div><div class="menu-items" id="cat_items"></div>`;
+    const grid = catEl.querySelector('.menu-items');
+
+    items.forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'menu-item' + (isPenalty ? ' penalty' : '');
+      const eff = isPenalty ? PENALTY : item;
+      btn.innerHTML = `
+        <span class="menu-item-emoji">${item.emoji}</span>
+        <span class="menu-item-name">${item.name}</span>
+        <div class="menu-item-stats">
+          <span class="stat-good">😊+${eff.satisfy}</span>
+          <span class="${eff.health >= 0 ? 'stat-good' : 'stat-bad'}">💪${eff.health >= 0 ? '+' : ''}${eff.health}</span>
+          <span class="${eff.weight <= 0 ? 'stat-good' : 'stat-bad'}">⚖️${eff.weight >= 0 ? '+' : ''}${eff.weight}</span>
+        </div>
+        <div style="font-size:6px;color:#6a6a9a;text-align:center;margin-top:2px;">${isPenalty ? '600' : item.kcal}kcal</div>`;
+      btn.onclick = () => eat(item);
+      grid.appendChild(btn);
+    });
+    body.appendChild(catEl);
+  });
+
+  document.getElementById('menuOverlay').classList.add('show');
+}
+
+function closeMenu() {
+  document.getElementById('menuOverlay').classList.remove('show');
+}
+
+function eat(item) {
+  closeMenu();
+  checkDayReset();
+  const isPenalty = state.mealsToday >= MAX_FREE_MEALS;
+  const eff = isPenalty ? PENALTY : item;
+
+  state.satisfy    = state.satisfy + eff.satisfy;
+  state.health     = Math.max(0, state.health + eff.health);
+  state.weight     = Math.max(0, state.weight + eff.weight);
+  state.mealsToday += 1;
+  // カロリー加算 → 💩チェック
+  addCalorie(isPenalty ? 600 : (item.kcal || 400));
+
+  const emoji = isPenalty ? '🤢' : item.emoji;
+  const msgs = isPenalty
+    ? ['うぷ…食いすぎだ…','もう限界…お腹パンパン','これ以上は…太る…']
+    : (eff.health >= 10
+      ? ['うまい！体にいい感じ！','ヘルシー最高！','これで健康になれる！']
+      : eff.health < -8
+      ? ['うんまい！！！','最高だけど体に悪いな…','ジャンクって最高！']
+      : ['うまい！','ごちそうさま！','まあまあだな']);
+  const msg = msgs[Math.floor(Math.random()*msgs.length)];
+
+  showBubble(isPenalty ? `${emoji} ${msg}` : `${emoji} ${msg}`);
+  setMsg(`${item.name}を食べた！`);
+  setAnim('s-eating', 1200);
+  spawnFx([emoji,'✨', eff.health >= 5 ? '💚' : eff.weight > 5 ? '⬆️' : '😋']);
+
+  if (state.health <= 0) { gameover(); return; }
+  updateUI();
+  setAnim(autoAnim());
+  saveGame();
+}
+
+// ===================================================
+// その他アクション
 // ===================================================
 function action(type) {
   if (!state.alive || state.actionLock) return;
-  if (state.sleeping && type!=='sleep') { showBubble('Zz…(寝てるよ)'); return; }
+  if (state.sleeping && type !== 'sleep') { showBubble('Zz…起こして！'); return; }
   state.actionLock = true;
-  setTimeout(()=>state.actionLock=false, 800);
+  setTimeout(() => state.actionLock = false, 800);
 
   switch(type) {
-    case 'feed':
-      if (state.hunger>=95) { showBubble(rnd(MSG.full)); setMsg('おなかいっぱいだ…'); setAnim('s-sad',1000); }
-      else {
-        state.hunger = Math.min(100,state.hunger+22);
-        state.weight = Math.min(100,state.weight+4);
-        state.happy  = Math.min(100,state.happy+5);
-        state.health = Math.min(100,state.health+2);
-        showBubble(rnd(MSG.feed)); setMsg('ごはんをあげた！');
-        setAnim('s-eating',1200); spawnFx(['🍖','✨','😋']);
-      }
-      break;
+    case 'run':
+      openMgSelect();
+      state.actionLock = false;
+      return;
     case 'clean':
-      state.health = Math.min(100,state.health+22);
-      state.happy  = Math.min(100,state.happy+8);
-      showBubble(rnd(MSG.clean)); setMsg('お風呂に入れた！');
-      setAnim('s-happy',1200); spawnFx(['💧','✨','🫧']);
+      if (state.poopCount === 0) {
+        showBubble('きれいだよ！問題なし！');
+        setMsg('💩はないよ！えらい！');
+        setAnim('s-happy', 1000);
+      } else {
+        const cleaned = state.poopCount;
+        state.poopCount = 0;
+        state.poopPositions = [];
+        state.health = state.health + cleaned * 1;
+        renderPoops();
+        showBubble('ありがとう！さっぱり！');
+        setMsg(`💩${cleaned}個片付けた！健康+${cleaned}！`);
+        setAnim('s-happy', 1200);
+        spawnFx(['✨','🧹','💨']);
+      }
       break;
     case 'sleep':
       if (state.sleeping) {
-        state.sleeping=false; state.sleep=Math.max(0,state.sleep-60);
-        showBubble(rnd(MSG.wake)); setMsg('ゆびっこが起きた！');
-        setAnim('s-happy',1000); spawnFx(['☀️','✨']);
+        state.sleeping = false;
+        state.satisfy  = state.satisfy + 10;
+        state.health   = state.health  + 5;
+        showBubble('おはよ！よく寝た！');
+        setMsg('ゆびっこが起きた！');
+        setAnim('s-happy', 1000); spawnFx(['☀️','✨']);
       } else {
-        state.sleeping=true;
-        showBubble(rnd(MSG.sleep)); setMsg('寝た… (もう一度で起こす)');
+        state.sleeping = true;
+        showBubble('おやすみ…Zz…');
+        setMsg('寝た… もう一度で起こす');
         setAnim('s-sleepy'); spawnFx(['💤','🌙']);
       }
       break;
-    case 'run_reward':
-      // ミニゲーム（運動）報酬
-      state.weight = Math.max(0, state.weight-12);
-      state.happy  = Math.min(100,state.happy+18);
-      state.hunger = Math.max(0, state.hunger-10);
-      state.health = Math.min(100,state.health+8);
-      showBubble('いい運動だった！'); setMsg('運動した！体重が減った！');
-      setAnim('s-happy',1500); spawnFx(['🏃','💨','⭐']);
-      break;
   }
-  updateUI();
-  saveGame();
+  updateUI(); saveGame();
 }
 
 // ===================================================
-// 自動ステータス減少（5秒ごと）
+// ゲームオーバー・リスタート
 // ===================================================
-setInterval(() => {
-  if (!state.alive) return;
-  if (state.sleeping) {
-    state.sleep  = Math.max(0,   state.sleep  - 14);
-    state.hunger = Math.max(0,   state.hunger - 1);
-    state.health = Math.min(100, state.health + 3);
-    state.weight = Math.max(0,   state.weight - 0.5);
-  } else {
-    state.hunger = Math.max(0,   state.hunger - 4);
-    state.happy  = Math.max(0,   state.happy  - 3);
-    state.sleep  = Math.min(100, state.sleep  + 4);
-    state.weight = Math.min(100, state.weight + 0.5); // じわじわ太る
-    if (state.hunger < 20) state.health = Math.max(0, state.health - 6);
-    if (state.sleep  > 85) state.health = Math.max(0, state.health - 4);
-    if (state.happy  < 20) state.health = Math.max(0, state.health - 3);
-    if (state.weight > 85) state.health = Math.max(0, state.health - 2);
-  }
-  state.age = Math.floor(Date.now()/5000) - startTick;
-
-  if (!state.sleeping) {
-    if      (state.health < 20) setMsg(rnd(MSG.sick)+'（頭も…）');
-    else if (state.weight > 80) setMsg(rnd(MSG.fat));
-    else if (state.weight < 25) setMsg(rnd(MSG.thin));
-    else if (state.hunger < 20) setMsg(rnd(MSG.hungry));
-    else if (state.sleep  > 75) setMsg(rnd(MSG.sleepy));
-    else if (state.happy  < 20) setMsg(rnd(MSG.unhappy));
-    else if (Math.random()<0.3)  setMsg(rnd(MSG.idle));
-  }
-
-  if (state.health <= 0) { gameover(); return; }
-
-  setAnim(autoAnim());
-  updateUI();
-  saveGame();
-}, 5000);
-
 function gameover() {
   state.alive = false;
   setAnim('s-dead');
   setMsg('ゆびっこは逝ってしまった…');
-  const hairMsg = state.hairStage >= 4 ? 'つるつるのまま逝った' : '';
-  const fatMsg  = state.bodyStage >= 3 ? 'デブのまま逝った' : state.bodyStage === 0 ? 'ガリガリのまま逝った' : '';
-  document.getElementById('ovSub').textContent = [hairMsg,fatMsg].filter(Boolean).join('・');
-  setTimeout(()=>document.getElementById('overlay').classList.add('show'), 1800);
+  const hairMsg = state.hairStage >= 4 ? 'つるつるのまま' : '';
+  const fatMsg  = state.bodyStage >= 3 ? 'デブのまま' : state.bodyStage === 0 ? 'ガリガリのまま' : '';
+  document.getElementById('ovSub').textContent = [hairMsg,fatMsg].filter(Boolean).join('・')+'逝った';
+  setTimeout(() => document.getElementById('overlay').classList.add('show'), 1800);
 }
 
 function restart() {
-  state = {...DEFAULT_STATE};
-  ANIMS.forEach(s=>petImg.classList.remove(s)); petImg.classList.add('s-idle');
-  ['body-thin','body-normal','body-chubby','body-fat'].forEach(c=>petImg.classList.remove(c));
+  state = {...DEFAULT, lastDate: new Date().toDateString()};
+  state.poopPositions = [];
+  state.bodyType = 'normal';
+  ANIMS.forEach(s => petImg.classList.remove(s)); petImg.classList.add('s-idle');
+  ['body-thin','body-normal','body-chubby','body-fat'].forEach(c => petImg.classList.remove(c));
   petImg.classList.add('body-normal');
   document.getElementById('overlay').classList.remove('show');
   setMsg('また育ててくれるのか！ありがとよ！');
   showBubble('今度は禿げないぞ！');
   spawnFx(['🎉','⭐','💇']);
   localStorage.removeItem(SAVE_KEY);
+  clearPendingPoops();
+  // 名前入力画面を再表示
+  const ns = document.getElementById('nameScreen');
+  ns.style.display = 'flex'; ns.classList.remove('hide');
+  document.getElementById('nameInput').value = '';
+  document.getElementById('nameStartBtn').disabled = true;
+  document.getElementById('gameTitle').textContent = '🫵 ゆびっこ 🫵';
   updateUI();
 }
 
 // ===================================================
-// ミニゲーム（うんどう）
+// ミニゲーム共通
 // ===================================================
-let mgInterval = null;
-let mgTimer = 10;
-let mgScore = 0;
-const FOODS = ['🍖','🍔','🍟','🍩','🍕','🌮','🍣','🍜'];
+const mgOverlay = document.getElementById('mgOverlay');
+const mgBox     = document.getElementById('mgBox');
 
-function openMinigame(type) {
+function openMg(html) { mgBox.innerHTML = html; mgOverlay.classList.add('show'); }
+function closeMg()    { mgOverlay.classList.remove('show'); mgBox.innerHTML = ''; }
+
+function mgReward() {
+  state.satisfy = state.satisfy + 10;
+  state.health  = state.health  + 5;
+  state.weight  = Math.max(0, state.weight - 1);
+  setMsg('運動した！気持ちよかった！');
+  setAnim('s-happy', 1500);
+  spawnFx(['🏃','💨','⭐','✨']);
+  updateUI(); saveGame();
+}
+
+// ===== ミニゲーム選択 =====
+function openMgSelect() {
   if (!state.alive) return;
   if (state.sleeping) { showBubble('Zz…起こして！'); return; }
-  if (state.sleep > 80) { showBubble('ねむい…運動むり'); return; }
-  mgScore = 0; mgTimer = 10;
-  document.getElementById('mgScore').innerHTML = `食べ物をタップしてゆびっこに食べさせるな！あと <span id="mgTimer">10</span>秒`;
-  document.getElementById('mgTitle').textContent = '🏃 はしれ！ゆびっこ！';
-  document.getElementById('mgScreen').innerHTML = '';
-  document.getElementById('mgOverlay').classList.add('show');
-  startFoodGame();
-}
-
-function startFoodGame() {
-  const screen = document.getElementById('mgScreen');
-  // 食べ物を定期的に落とす
-  mgInterval = setInterval(() => {
-    if (mgTimer <= 0) { endMinigame(); return; }
-    const el = document.createElement('div');
-    el.className = 'food-item';
-    el.textContent = FOODS[Math.floor(Math.random()*FOODS.length)];
-    el.style.left = (5+Math.random()*80)+'%';
-    const dur = 1.5 + Math.random()*1.5;
-    el.style.animation = `fall ${dur}s linear forwards`;
-    el.addEventListener('click', () => {
-      el.remove(); mgScore++;
-      document.getElementById('mgTimer').textContent = mgTimer;
-    });
-    screen.appendChild(el);
-    setTimeout(()=>{ if(el.parentNode) el.remove(); }, dur*1000);
-    mgTimer -= 1;
-    const timerEl = document.getElementById('mgTimer');
-    if (timerEl) timerEl.textContent = mgTimer;
-  }, 1000);
-}
-
-function endMinigame() {
-  clearInterval(mgInterval);
-  document.getElementById('mgTitle').textContent = `結果：${mgScore}個避けた！`;
-  document.getElementById('mgScreen').innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#c8e888;font-size:28px;">🏃✨</div>`;
-  setTimeout(() => {
-    closeMinigame();
-    action('run_reward');
-  }, 1500);
-}
-
-function closeMinigame() {
-  clearInterval(mgInterval);
-  document.getElementById('mgOverlay').classList.remove('show');
+  openMg(`
+    <div class="mg-title">🏃 うんどう</div>
+    <div class="mg-sub">どっちにする？</div>
+    <div class="mg-select-grid">
+      <button class="mg-select-btn" onclick="startDrum()">
+        <span class="mg-select-emoji">🥁</span>
+        <span class="mg-select-name">ドラムタップ</span>
+        <span class="mg-select-desc">リズムよくタップ！</span>
+      </button>
+      <button class="mg-select-btn" onclick="startBreath()">
+        <span class="mg-select-emoji">💨</span>
+        <span class="mg-select-name">息切れチャレンジ</span>
+        <span class="mg-select-desc">10秒連打！</span>
+      </button>
+    </div>
+    <div class="mg-btn-row">
+      <button class="mg-btn close" onclick="closeMg()">やめる</button>
+    </div>
+  `);
 }
 
 // ===================================================
-// Service Worker 登録
+// ミニゲーム① ドラムタップ
+// ===================================================
+let drumTimer = null;
+let drumScore = 0, drumMiss = 0, drumTotal = 0;
+
+function startDrum() {
+  drumScore = 0; drumMiss = 0; drumTotal = 0;
+  const COLORS = ['#e06060','#60a0e0','#60e090','#e0c060'];
+  const LANE_COUNT = 4;
+  let timeLeft = 20;
+  let noteInterval, countInterval;
+
+  openMg(`
+    <div class="mg-title">🥁 ドラムタップ！</div>
+    <div class="mg-info" id="drumInfo">あと <span id="drumTime">20</span>秒　🎯<span id="drumScoreDisp">0</span></div>
+    <div class="mg-screen" id="drumScreen" style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:2px;">
+      ${[0,1,2,3].map(i=>`
+        <div class="drum-lane" style="position:relative;height:100%;background:rgba(255,255,255,0.03);border-radius:6px;" id="lane${i}">
+          <div class="drum-hit-zone"></div>
+          <button class="drum-lane-btn" style="background:${COLORS[i]}22;border-top:none;" onclick="drumHit(${i})"></button>
+        </div>`).join('')}
+    </div>
+    <div class="mg-btn-row">
+      <button class="mg-btn close" onclick="endDrum(true)">やめる</button>
+    </div>
+  `);
+
+  // ノーツを生成
+  noteInterval = setInterval(() => {
+    if (timeLeft <= 0) return;
+    const lane = Math.floor(Math.random() * LANE_COUNT);
+    const laneEl = document.getElementById('lane'+lane);
+    if (!laneEl) return;
+    const note = document.createElement('div');
+    note.className = 'drum-note';
+    note.dataset.lane = lane;
+    note.dataset.hit = '0';
+    const dur = 1.2 + Math.random() * 0.6;
+    note.style.cssText = `background:${COLORS[lane]};animation-duration:${dur}s;top:-40px;`;
+    note.style.animation = `note-fall ${dur}s linear forwards`;
+    laneEl.insertBefore(note, laneEl.querySelector('.drum-hit-zone'));
+    drumTotal++;
+    setTimeout(() => {
+      if (note.dataset.hit === '0') {
+        note.remove();
+        drumMiss++;
+        showJudge(laneEl, 'MISS', '#ff6060');
+      }
+    }, dur * 1000);
+  }, 600);
+
+  // カウントダウン
+  countInterval = setInterval(() => {
+    timeLeft--;
+    const el = document.getElementById('drumTime');
+    if (el) el.textContent = timeLeft;
+    if (timeLeft <= 0) { clearInterval(noteInterval); clearInterval(countInterval); setTimeout(() => endDrum(false), 800); }
+  }, 1000);
+
+  drumTimer = { noteInterval, countInterval };
+}
+
+window.drumHit = function(lane) {
+  const laneEl = document.getElementById('lane'+lane);
+  if (!laneEl) return;
+  // ヒットゾーン付近のノーツを探す
+  const notes = laneEl.querySelectorAll('.drum-note');
+  let hit = false;
+  notes.forEach(note => {
+    if (note.dataset.hit === '1') return;
+    const rect = note.getBoundingClientRect();
+    const zoneRect = laneEl.querySelector('.drum-hit-zone').getBoundingClientRect();
+    const overlap = rect.bottom > zoneRect.top && rect.top < zoneRect.bottom + 30;
+    if (overlap && !hit) {
+      hit = true;
+      note.dataset.hit = '1';
+      note.style.opacity = '0';
+      setTimeout(() => note.remove(), 100);
+      // 判定
+      const center = (rect.top + rect.bottom) / 2;
+      const zoneMid = (zoneRect.top + zoneRect.bottom) / 2;
+      const diff = Math.abs(center - zoneMid);
+      if (diff < 20) {
+        drumScore += 2; showJudge(laneEl, 'PERFECT', '#f0d060');
+      } else {
+        drumScore += 1; showJudge(laneEl, 'GOOD', '#60e090');
+      }
+      const sd = document.getElementById('drumScoreDisp');
+      if (sd) sd.textContent = drumScore;
+    }
+  });
+};
+
+function showJudge(laneEl, text, color) {
+  const el = document.createElement('div');
+  el.className = 'drum-judge';
+  el.textContent = text;
+  el.style.cssText = `color:${color};left:50%;transform:translateX(-50%);bottom:60px;font-size:11px;`;
+  laneEl.appendChild(el);
+  setTimeout(() => el.remove(), 700);
+}
+
+function endDrum(quit) {
+  if (drumTimer) { clearInterval(drumTimer.noteInterval); clearInterval(drumTimer.countInterval); }
+  if (quit) { closeMg(); return; }
+  const rate = drumTotal > 0 ? drumScore / (drumTotal * 2) : 0;
+  let rank, weightDelta, healthDelta, comment;
+  if      (rate >= 0.8) { rank='S'; weightDelta=-12; healthDelta=12; comment='完璧だ！！！'; }
+  else if (rate >= 0.6) { rank='A'; weightDelta=-8;  healthDelta=8;  comment='なかなかやるな！'; }
+  else if (rate >= 0.4) { rank='B'; weightDelta=-5;  healthDelta=5;  comment='まあまあだな'; }
+  else                  { rank='C'; weightDelta=-2;  healthDelta=2;  comment='もっと練習だ…'; }
+
+  openMg(`
+    <div class="mg-title">🥁 結果発表！</div>
+    <div style="font-size:48px;text-align:center;">${rank === 'S' ? '🌟' : rank === 'A' ? '⭐' : rank === 'B' ? '👍' : '💦'}</div>
+    <div class="mg-result">
+      ランク <b style="font-size:22px;color:#f0d060;">${rank}</b><br>
+      スコア ${drumScore}点　MISS ${drumMiss}回<br>
+      <span style="font-size:10px;color:#c8e888;">${comment}</span>
+    </div>
+    <div style="font-size:9px;color:#8a8ab8;">体重${weightDelta}　健康+${healthDelta}</div>
+    <div class="mg-btn-row">
+      <button class="mg-btn primary" onclick="closeMg(); mgReward()">とじる</button>
+    </div>
+  `);
+}
+
+// ===================================================
+// ミニゲーム② 息切れチャレンジ
+// ===================================================
+let breathCount = 0, breathTimer = null, breathActive = false;
+
+function startBreath() {
+  breathCount = 0; breathActive = true;
+  const TOTAL = 10;
+  let timeLeft = TOTAL;
+
+  openMg(`
+    <div class="mg-title">💨 息切れチャレンジ！</div>
+    <div class="mg-info">10秒間ひたすら連打！</div>
+    <div class="mg-screen" id="breathScreen">
+      <div class="breath-tap-area" id="breathTap" onpointerdown="breathTap()">
+        <div class="breath-circle" id="breathCircle">
+          <span class="breath-count-big" id="breathCountDisp">0</span>
+          <span class="breath-label">たたけ！</span>
+        </div>
+      </div>
+      <div class="breath-timer-bar" id="breathBar" style="width:100%;"></div>
+    </div>
+    <div class="mg-info" id="breathMsg">ひたすら押せ！</div>
+    <div class="mg-btn-row">
+      <button class="mg-btn close" onclick="endBreath(true)">やめる</button>
+    </div>
+  `);
+
+  breathTimer = setInterval(() => {
+    timeLeft -= 0.1;
+    const bar = document.getElementById('breathBar');
+    if (bar) bar.style.width = Math.max(0, (timeLeft / TOTAL * 100)) + '%';
+    // リアクション
+    const msg = document.getElementById('breathMsg');
+    if (msg) {
+      if      (breathCount > 60) msg.textContent = '化け物か！！！';
+      else if (breathCount > 40) msg.textContent = 'すごい！やばい！';
+      else if (breathCount > 20) msg.textContent = 'いいぞ！続けろ！';
+      else                       msg.textContent = 'ひたすら押せ！';
+    }
+    if (timeLeft <= 0) { clearInterval(breathTimer); breathActive = false; setTimeout(() => endBreath(false), 300); }
+  }, 100);
+}
+
+window.breathTap = function() {
+  if (!breathActive) return;
+  breathCount++;
+  const d = document.getElementById('breathCountDisp');
+  if (d) d.textContent = breathCount;
+  const c = document.getElementById('breathCircle');
+  if (c) { c.classList.add('pressed'); setTimeout(() => c.classList.remove('pressed'), 80); }
+};
+
+function endBreath(quit) {
+  clearInterval(breathTimer);
+  breathActive = false;
+  if (quit) { closeMg(); return; }
+  let rank, weightDelta, healthDelta, comment;
+  if      (breathCount >= 70) { rank='S'; weightDelta=-15; healthDelta=15; comment='ゆびっこ限界突破！！'; }
+  else if (breathCount >= 50) { rank='A'; weightDelta=-10; healthDelta=10; comment='すごい運動量だ！'; }
+  else if (breathCount >= 30) { rank='B'; weightDelta=-6;  healthDelta=6;  comment='いい汗かいた！'; }
+  else if (breathCount >= 15) { rank='C'; weightDelta=-3;  healthDelta=3;  comment='まあ、運動はしたな'; }
+  else                        { rank='D'; weightDelta=-1;  healthDelta=1;  comment='それだけか…'; }
+
+  const emoji = rank==='S'?'🔥':rank==='A'?'💪':rank==='B'?'😅':rank==='C'?'😤':'😑';
+  openMg(`
+    <div class="mg-title">💨 結果！</div>
+    <div style="font-size:48px;text-align:center;">${emoji}</div>
+    <div class="mg-result">
+      ${breathCount}回連打！<br>
+      ランク <b style="font-size:22px;color:#f0d060;">${rank}</b><br>
+      <span style="font-size:10px;color:#c8e888;">${comment}</span>
+    </div>
+    <div style="font-size:9px;color:#8a8ab8;">体重${weightDelta}　健康+${healthDelta}</div>
+    <div class="mg-btn-row">
+      <button class="mg-btn primary" onclick="closeMg(); mgReward()">とじる</button>
+    </div>
+  `);
+}
+
+// ===================================================
+// 名前入力スタート画面
+// ===================================================
+function onNameInput() {
+  const val = document.getElementById('nameInput').value.trim();
+  document.getElementById('nameStartBtn').disabled = val.length === 0;
+}
+
+function startGame() {
+  const name = document.getElementById('nameInput').value.trim();
+  if (!name) return;
+  state.petName = name;
+  document.getElementById('gameTitle').textContent = `🫵 ${name} 🫵`;
+  setMsg(`やあ！おれは${name}だ！よろしくな！`);
+  showBubble(`${name}だぞ！よろしく！`);
+  const ns = document.getElementById('nameScreen');
+  ns.classList.add('hide');
+  setTimeout(() => ns.style.display = 'none', 500);
+  spawnFx(['🎉','⭐','✨','🫵']);
+  saveGame();
+}
+
+function skipNameScreen() {
+  document.getElementById('nameScreen').style.display = 'none';
+}
+
 // ===================================================
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js').then(() => {
-    console.log('SW registered');
-  });
+  navigator.serviceWorker.register('service-worker.js');
 }
 
 // ===================================================
 // 初期化
 // ===================================================
+state.lastDate = state.lastDate || new Date().toDateString();
+state.poopPositions = state.poopPositions || [];
+state.bodyType = state.bodyType || 'normal';
+processPendingPoops();
 updateUI();
 setAnim(autoAnim());
-setTimeout(() => showBubble(saved ? 'おかえり！' : 'よろしくな！'), 600);
+
+// セーブデータあり（名前もあり）→ スタート画面スキップ
+if (saved && saved.petName) {
+  const name = saved.petName;
+  document.getElementById('gameTitle').textContent = `🫵 ${name} 🫵`;
+  skipNameScreen();
+  setTimeout(() => {
+    showBubble(`おかえり！${name}だぞ！`);
+    setMsg(`おかえり！${name}だよ！`);
+  }, 600);
+} else {
+  // 新規 → 名前入力画面を表示
+  // （nameScreenはデフォルトで表示済み）
+}
 </script>
 </body>
 </html>
