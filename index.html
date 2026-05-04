@@ -226,7 +226,6 @@ body{
     <div class="msg-bar" id="msgBar">やあ！おれはゆびっこだ！よろしくな！</div>
     <div class="screen" id="mainScreen">
       <div class="badges" id="badges">💇フサフサ<br>⚖️ふつう</div>
-      <div class="meal-count" id="mealCount">🍽️ 本日0食</div>
       <div class="pet-area">
         <div class="shadow"></div>
         <img class="pet-img s-idle body-normal" id="petImg" src="hair0.png" alt="ゆびっこ">
@@ -247,7 +246,7 @@ body{
     <button class="btn bf" onclick="openMenu()"><span class="i">🍽️</span>ごはん</button>
     <button class="btn bp" onclick="action('run')"><span class="i">🏃</span>うんどう</button>
     <button class="btn bc" onclick="action('clean')"><span class="i">🧹</span>せいそう</button>
-    <button class="btn bs" onclick="action('sleep')"><span class="i">💤</span>ねかす</button>
+    <button class="btn bs" id="sleepBtn" onclick="action('sleep')"><span class="i">🌅</span>起こす</button>
   </div>
 </div>
 
@@ -553,8 +552,6 @@ function updateUI() {
   checkDayReset();
   updateCharacter();
   renderPoops();
-  document.getElementById('mealCount').textContent =
-    `🍽️ 本日${state.mealsToday}食${state.mealsToday >= MAX_FREE_MEALS ? '⚠️' : ''}`;
 }
 
 function updateCharacter() {
@@ -819,17 +816,21 @@ function action(type) {
       break;
     case 'sleep':
       if (state.sleeping) {
+        // 起こす：睡眠スコア計算
+        const wokeHour = new Date().getHours();
+        const sleepScore = calcSleepScore(wokeHour);
         state.sleeping = false;
-        state.satisfy  = state.satisfy + 10;
-        state.health   = state.health  + 5;
-        showBubble('おはよ！よく寝た！');
-        setMsg('ゆびっこが起きた！');
-        setAnim('s-happy', 1000); spawnFx(['☀️','✨']);
+        state.sleepWokeHour = wokeHour;
+        state.health = Math.max(0, state.health + sleepScore.healthDelta);
+        state.satisfy = state.satisfy + 10;
+        showBubble(sleepScore.msg);
+        setMsg(`起きた！${sleepScore.label}`);
+        setAnim('s-happy', 1000);
+        spawnFx(sleepScore.healthDelta >= 0 ? ['☀️','✨','😊'] : ['😓','💦','⏰']);
+        document.getElementById('sleepBtn').innerHTML = '<span class="i">🌅</span>起こす';
       } else {
-        state.sleeping = true;
-        showBubble('おやすみ…Zz…');
-        setMsg('寝た… もう一度で起こす');
-        setAnim('s-sleepy'); spawnFx(['💤','🌙']);
+        showBubble('22時になったら自動で寝るよ！');
+        setMsg('22時になったら自動就寝！');
       }
       break;
   }
@@ -877,7 +878,53 @@ function restart() {
 }
 
 // ===================================================
-// ミニゲーム共通
+// 睡眠スコア計算（起床時間ベース）
+// 基準：6時起床（22時就寝→8時間睡眠）
+// 前後1時間ごとに健康±
+// ===================================================
+function calcSleepScore(wokeHour) {
+  // 基準起床時刻：6時（22時就寝+8時間）
+  const BASE_WAKE = 6;
+  // 時間差（循環考慮）
+  let diff = wokeHour - BASE_WAKE;
+  if (diff > 12)  diff -= 24;
+  if (diff < -12) diff += 24;
+  const absDiff = Math.abs(diff);
+
+  let healthDelta, label, msg;
+  if (absDiff === 0) {
+    healthDelta = +15; label = '最高の睡眠！💯'; msg = '6時起床！完璧だ！';
+  } else if (absDiff === 1) {
+    healthDelta = +10; label = 'いい睡眠！'; msg = 'よく寝た！';
+  } else if (absDiff === 2) {
+    healthDelta = +5;  label = 'まあまあ'; msg = 'もう少し規則正しく…';
+  } else if (absDiff === 3) {
+    healthDelta = 0;   label = 'ギリギリ'; msg = '睡眠リズム乱れてるぞ';
+  } else if (absDiff === 4) {
+    healthDelta = -5;  label = '寝すぎ or 寝不足'; msg = 'リズム狂ってる…';
+  } else {
+    healthDelta = -10; label = '睡眠最悪😞'; msg = 'こんな時間に起きるな…';
+  }
+  return { healthDelta, label, msg };
+}
+
+// 自動就寝チェック（1分ごと）
+setInterval(() => {
+  if (!state.alive || state.sleeping) return;
+  const now = new Date();
+  if (now.getHours() === 22 && now.getMinutes() === 0) {
+    state.sleeping = true;
+    state.sleepStartHour = 22;
+    showBubble('おやすみ…Zz…');
+    setMsg('22時！自動でおやすみ💤');
+    setAnim('s-sleepy');
+    spawnFx(['💤','🌙','⭐']);
+    document.getElementById('sleepBtn').innerHTML = '<span class="i">🌅</span>起こす';
+    updateUI(); saveGame();
+  }
+}, 60000);
+
+// ===================================================
 // ===================================================
 const mgOverlay = document.getElementById('mgOverlay');
 const mgBox     = document.getElementById('mgBox');
@@ -1067,8 +1114,8 @@ function startBreath() {
     <div class="mg-title">💨 息切れチャレンジ！</div>
     <div class="mg-info">10秒間ひたすら連打！</div>
     <div class="mg-screen" id="breathScreen">
-      <div class="breath-tap-area" id="breathTap" onpointerdown="breathTap()">
-        <div class="breath-circle" id="breathCircle">
+      <div class="breath-tap-area" id="breathTap">
+        <div class="breath-circle" id="breathCircle" onclick="breathTap()" style="cursor:pointer;">
           <span class="breath-count-big" id="breathCountDisp">0</span>
           <span class="breath-label">たたけ！</span>
         </div>
@@ -1080,6 +1127,17 @@ function startBreath() {
       <button class="mg-btn close" onclick="endBreath(true)">やめる</button>
     </div>
   `);
+
+  // タッチイベントも追加（innerHTML後にsetTimeout）
+  setTimeout(() => {
+    const circle = document.getElementById('breathCircle');
+    if (circle) {
+      circle.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        breathTap();
+      }, { passive: false });
+    }
+  }, 100);
 
   breathTimer = setInterval(() => {
     timeLeft -= 0.1;
