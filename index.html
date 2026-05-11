@@ -401,13 +401,20 @@ let state = saved && saved.alive ? {...DEFAULT,...saved,actionLock:false} : {...
 setInterval(naturalDecay, 60000);
 function naturalDecay() {
   if (!state.alive || state.sleeping) return;
-  state.satisfy = Math.max(0, state.satisfy - 5);
-  state.weight  = state.weight + 0.3;
+  state.weight = state.weight + 0.3;
   if (state.satisfy < 20) state.health = Math.max(0, state.health - 3);
   if (state.weight  > 85) state.health = Math.max(0, state.health - 2);
   if (state.health <= 0) { gameover(); return; }
   updateUI(); autoMsg(); saveGame();
 }
+
+// 満足減少タイマー（1時間ごと）
+setInterval(() => {
+  if (!state.alive || state.sleeping) return;
+  state.satisfy = Math.max(0, state.satisfy - 5);
+  if (state.health <= 0) { gameover(); return; }
+  updateUI(); autoMsg(); saveGame();
+}, 3600000);
 
 // 💩ダメージタイマー（1時間ごと）
 setInterval(poopDecay, 3600000);
@@ -604,15 +611,14 @@ function checkMidnightEvolution() {
   const prevType = state.bodyType || 'normal';
   let newType = 'normal';
 
-  // 進化判定
-  if (state.health < 30) {
-    newType = 'sick';   // 病弱：健康30未満
-  } else if (state.health >= 150 && state.weight <= 80) {
-    newType = 'macho';  // マッチョ：健康150以上かつ体重80以下
-  } else if (state.weight >= 130) {
-    newType = 'fat';    // デブ：体重130以上
-  } else if (state.weight <= 30) {
-    newType = 'thin';   // ガリガリ：体重30以下
+  if (state.health < 30 || (state.satisfy <= 20 && state.health < 60)) {
+    newType = 'sick';   // 病弱：健康30未満 または 満足20以下＋健康60未満
+  } else if (state.health >= 150 && state.weight <= 80 && state.satisfy >= 100) {
+    newType = 'macho';  // マッチョ：健康150以上＋体重80以下＋満足100以上
+  } else if (state.weight >= 130 || (state.satisfy <= 30 && state.weight >= 100)) {
+    newType = 'fat';    // デブ：体重130以上 または 満足30以下＋体重100以上
+  } else if (state.weight <= 30 || (state.satisfy <= 30 && state.weight <= 40)) {
+    newType = 'thin';   // ガリガリ：体重30以下 または 満足30以下＋体重40以下
   } else {
     newType = 'normal';
   }
@@ -893,18 +899,29 @@ function calcSleepScore(wokeHour) {
 // 自動就寝チェック（1分ごと）
 setInterval(() => {
   if (!state.alive || state.sleeping) return;
-  const now = new Date();
-  if (now.getHours() === 22 && now.getMinutes() === 0) {
+  const h = new Date().getHours();
+  if (h >= 22) {
     state.sleeping = true;
-    state.sleepStartHour = 22;
     showBubble('おやすみ…Zz…');
-    setMsg('22時！自動でおやすみ💤');
+    setMsg('22時すぎ！自動でおやすみ💤');
     setAnim('s-sleepy');
     spawnFx(['💤','🌙','⭐']);
     document.getElementById('sleepBtn').innerHTML = '<span class="i">🌅</span>起こす';
     updateUI(); saveGame();
   }
 }, 60000);
+
+// 起動時にも即チェック
+(function checkAutoSleepOnLoad() {
+  if (!state.alive || state.sleeping) return;
+  const h = new Date().getHours();
+  if (h >= 22) {
+    state.sleeping = true;
+    setAnim('s-sleepy');
+    document.getElementById('sleepBtn').innerHTML = '<span class="i">🌅</span>起こす';
+    setMsg('おやすみ中…起こすボタンで起こしてね💤');
+  }
+})();
 
 // ===================================================
 // ===================================================
